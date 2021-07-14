@@ -1,0 +1,38 @@
+.as-case-card{
+    width: 100%;
+    font-family: 'Cairo';
+}
+.as-case-template{
+    width: 100%;
+}
+
+.as-case-card-body{
+    min-height: 60vh;
+    padding-bottom: 0.5rem;
+    overflow-y: scroll;
+}
+.as-case-card-body-bg{
+    background-color:nb-theme(layout-background-color);
+}
+
+.fa-ico-po{
+
+    display: inline-block;
+    position: relative;
+}
+.fa-ico-po > .fa-slash{
+    position: absolute;
+    top: 5px;
+    left: -4px;
+}
+
+
+
+// Syncfusion
+.e-grid .e-headercelldiv,    //for header
+.e-grid .e-rowcell,              //for content
+.e-grid .e-summarycell,     //for summary
+.e-grid .e-row .e-input-group .e-input.e-field {  //for edit state
+    font-size: 14px;
+    font-family: 'Cairo';
+}

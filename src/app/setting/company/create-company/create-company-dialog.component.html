@@ -1,0 +1,96 @@
+<form class="form-horizontal" autocomplete="off" #editCompanyForm="ngForm" (ngSubmit)="save()">
+    <nb-card>
+        <nb-card-header>
+            {{'CreateNewCompany' | localize}}
+        </nb-card-header>
+        <nb-card-body>
+            <tabset>
+                <tab [heading]="'CompanyInfo' | localize" class="pt-3 px-2">
+                    <!--Name-->
+                    <div class="form-group row required">
+                        <label class="col-md-3 col-form-label" for="name">
+                            {{ "Name" | localize }}
+                        </label>
+                        <div  class="col-md-9">
+                            <input nbInput type="text" class="form-control"
+                            name="name" 
+                            id="name" 
+                            minlength="2" 
+                            required 
+                            [(ngModel)]="company.name" 
+                            #nameModel="ngModel" 
+                            #nameEl />
+                            <abp-validation-summary [control]="nameModel" [controlEl]="nameEl">
+                            </abp-validation-summary>
+                        </div>
+                    </div>
+                </tab>
+                <!-- Company Balances -->
+                <tab [heading]="'CompanyBalances' | localize" class="pt-3 px-2">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="name">
+                                    {{ "Currency" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <nb-select 
+                                        fullWidth
+                                        name="currencyId" 
+                                        id="currencyId" 
+                                        [(ngModel)]="companyBalance.currencyId" 
+                                        >
+                                        <nb-option *ngFor="let currency of currencies;" [value]="currency.id">{{ currency.name}}</nb-option>
+                                    </nb-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="name">
+                                    {{ "Balance" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <input nbInput type="number" class="form-control"
+                                    name="balance" 
+                                    id="balance" 
+                                    [(ngModel)]="companyBalance.balance" 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <a nbButton shape="round" status="primary" (click)="addCompanyBalance($event)"><i class="fa fa-plus"></i></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                    <th>{{'Balance' | localize}}</th>
+                                    <th>{{'Currency' | localize}}</th>
+                                    <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let companyBalance of company.companyBalances" >
+                                        <td><span class="v-text-primary"> {{companyBalance.balance}}</span></td>
+                                        <td><span class="v-text-primary"> {{getCurrencyName(companyBalance.currencyId)}}</span></td>
+                                        <td><span><a  (click)="removeCompanyBalance(companyBalance.currencyId)"><nb-icon status="danger" icon="trash-2-outline"></nb-icon></a></span></td>
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+            
+        </nb-card-body>
+        <nb-card-footer>
+            <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!editCompanyForm.form.valid || saving"
+            (onCancelClick)="dialogRef.close()"></abp-modal-footer>
+        </nb-card-footer>
+    </nb-card>
+</form>
