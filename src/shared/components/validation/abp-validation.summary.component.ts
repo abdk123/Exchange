@@ -73,17 +73,18 @@ export class AbpValidationSummaryComponent extends AppComponentBase implements O
           this.control.valid &&
           (this.control.dirty || this.control.touched)
         ) {
-          if(this.elementType != 'nb')
-            this._renderer.removeClass(this.controlEl, 'is-invalid');
+          // if(this.elementType != 'nb')
+          //   this._renderer.removeClass(this.controlEl, 'is-invalid');
+          
         }
       });
     }
   }
 
   getValidationErrorMessage(error: AbpValidationError): string {
-    if (this.controlEl && this.elementType != 'nb') {
-        this._renderer.addClass(this.controlEl, 'is-invalid');
-    }
+    // if (this.controlEl && this.elementType != 'nb') {
+    //     this._renderer.addClass(this.controlEl, 'is-invalid');
+    // }
 
     const propertyValue = this.control.errors[error.name][error.propertyKey];
     return !!propertyValue

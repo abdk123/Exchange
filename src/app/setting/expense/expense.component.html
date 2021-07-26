@@ -4,7 +4,7 @@
             <nb-card class="as-case-card">
                 <nb-card-header>
                     <nb-actions>
-                        <nb-action class="control-item" icon="bookmark-outline"></nb-action>
+                        <nb-action class="control-item" icon="arrowhead-up-outline"></nb-action>
                         <nb-action class="control-item ">
                             <h5>{{ "Expenses" | localize }}</h5> 
                         </nb-action>
@@ -12,7 +12,7 @@
                 </nb-card-header>
                 <nb-card-body class="as-case-card-body">
                     <ejs-grid id="expenseGrid" #expenseGrid [dataSource]="expenses" [allowPaging]="true"
-                    [allowSorting]="true" [allowFiltering]="true"
+                    [allowSorting]="true" [allowFiltering]="true" [enableRtl]='true' 
                     [pageSettings]="pageSettings" [filterSettings]='filterOption'>
                     <!--toolbar-->
                     <ng-template #toolbarTemplate>

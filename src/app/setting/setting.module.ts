@@ -9,6 +9,7 @@ import {
   NbDialogModule, 
   NbIconModule, 
   NbInputModule, 
+  NbCheckboxModule,
   NbSelectModule } from '@nebular/theme';
 import { SharedModule } from '@shared/shared.module';
 import { FormsModule } from '@angular/forms';
@@ -24,21 +25,21 @@ import {
   PageService, 
   SortService, 
   ToolbarService } from '@syncfusion/ej2-angular-grids';
-import {MatTabsModule} from '@angular/material/tabs';
-import { UploaderModule } from '@syncfusion/ej2-angular-inputs';
+import { NumericTextBoxModule, UploaderModule } from '@syncfusion/ej2-angular-inputs';
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import { SwitchModule } from '@syncfusion/ej2-angular-buttons';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { SettingComponent } from './setting.component';
 import { SettingRoutingModule } from './setting-routing.module';
 import { CountryComponent } from './country/country.component';
 import { EditCountryDialogComponent } from './country/edit-country/edit-country-dialog.component';
 import { CreateCountryDialogComponent } from './country/create-country/create-country-dialog.component';
-import { ClientServiceProxy, CompanyServiceProxy, CountryServiceProxy, CurrencyServiceProxy, ExpenseServiceProxy, IncomeServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ClientServiceProxy, CommisionServiceProxy, CompanyServiceProxy, CountryServiceProxy, CurrencyServiceProxy, ExpenseServiceProxy, IncomeServiceProxy, ProvinceServiceProxy, TreasuryBalanceServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CurrencyComponent } from './currency/currency.component';
 import { CreateCurrencyDialogComponent } from './currency/create-currency/create-currency-dialog.component';
 import { EditCurrencyDialogComponent } from './currency/edit-currency/edit-currency-dialog.component';
 import { ProvinceComponent } from './country/province/province.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { Ng2SmartTableModule, LocalDataSource } from 'ng2-smart-table';
 import { IncomeComponent } from './income/income.component';
 import { CreateIncomeDialogComponent } from './income/create-income/create-income-dialog.component';
 import { EditIncomeDialogComponent } from './income/edit-income/edit-income-dialog.component';
@@ -48,6 +49,13 @@ import { EditExpenseDialogComponent } from './expense/edit-expense/edit-expense-
 import { CompanyComponent } from './company/company.component';
 import { CreateCompanyDialogComponent } from './company/create-company/create-company-dialog.component';
 import { EditCompanyDialogComponent } from './company/edit-company/edit-company-dialog.component';
+import { ClientComponent } from './client/client.component';
+import { EditClientDialogComponent } from './client/edit-client/edit-client-dialog.component';
+import { CreateClientDialogComponent } from './client/create-client/create-client-dialog.component';
+import { InitialBalanceComponent } from './initial-balance/initial-balance.component';
+import { CommisionComponent } from './commision/commision.component';
+import { CreateCommisionDialogComponent } from './commision/create-commision/create-commision-dialog.component';
+import { EditCommisionDialogComponent } from './commision/edit-commision/edit-commision-dialog.component';
 
 const NB_MODULES = [
   NbActionsModule,
@@ -58,12 +66,16 @@ const NB_MODULES = [
   NbButtonModule,
   NbInputModule,
   NbSelectModule,
-  NbAlertModule
+  NbAlertModule,
+  NbCheckboxModule
 ];
 const SYNCFUSION_MODULES = [
   GridModule,
   ToolbarModule,
-  UploaderModule
+  UploaderModule,
+  NumericTextBoxModule,
+  DropDownListModule,
+  SwitchModule 
 ];
 
 const SYNCFUSION_SERVICES = [
@@ -94,7 +106,14 @@ const SYNCFUSION_SERVICES = [
     EditExpenseDialogComponent,
     CompanyComponent,
     CreateCompanyDialogComponent,
-    EditCompanyDialogComponent, 
+    EditCompanyDialogComponent,
+    ClientComponent,
+    CreateClientDialogComponent,
+    EditClientDialogComponent,
+    InitialBalanceComponent,
+    CommisionComponent,
+    CreateCommisionDialogComponent,
+    EditCommisionDialogComponent, 
   ],
   imports: [
     CommonModule,
@@ -117,6 +136,9 @@ const SYNCFUSION_SERVICES = [
     IncomeServiceProxy,
     CompanyServiceProxy,
     ClientServiceProxy,
+    ProvinceServiceProxy,
+    CommisionServiceProxy,
+    TreasuryBalanceServiceProxy
   ],
   entryComponents: [
 

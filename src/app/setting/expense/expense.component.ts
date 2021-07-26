@@ -8,6 +8,11 @@ import { DataManager, UrlAdaptor   } from '@syncfusion/ej2-data';
 import { finalize } from 'rxjs/operators';
 import { CreateExpenseDialogComponent } from './create-expense/create-expense-dialog.component';
 import { EditExpenseDialogComponent } from './edit-expense/edit-expense-dialog.component';
+import { L10n, setCulture } from '@syncfusion/ej2-base';
+import { LocalizationHelper } from '@shared/localization/localization-helper';
+
+setCulture('ar-SY');
+L10n.load(LocalizationHelper.getArabicResources());
 
 @Component({
   selector: 'app-expense',

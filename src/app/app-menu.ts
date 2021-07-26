@@ -23,6 +23,18 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/app/setting/company',
       },
       {
+        title: 'Clients',
+        link: '/app/setting/client',
+      },
+      {
+        title: 'InitialBalance',
+        link: '/app/setting/initial-balance',
+      },
+      {
+        title: 'Commision',
+        link: '/app/setting/commision',
+      },
+      {
         title: 'Expenses',
         link: '/app/setting/expense',
       },

@@ -71,7 +71,7 @@ export class CompanyComponent extends AppComponentBase implements OnInit {
   delete(data): void {
     abp.message.confirm(
       this.l('DoYouWantToRemoveTheCompany', data.name),
-      undefined,
+      this.l('AreYouSure') + '?',
       (result: boolean) => {
         if (result) {
           this._companyAppService

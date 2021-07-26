@@ -13,6 +13,7 @@
                         </label>
                         <div  class="col-md-9">
                             <input nbInput type="text" class="form-control"
+                            fullWidth
                             name="name" 
                             id="name" 
                             minlength="2" 
@@ -28,20 +29,15 @@
                 <!-- Company Balances -->
                 <tab [heading]="'CompanyBalances' | localize" class="pt-3 px-2">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="name">
                                     {{ "Currency" | localize }}
                                 </label>
                                 <div  class="col-md-9">
-                                    <nb-select 
-                                        fullWidth
-                                        name="currencyId" 
-                                        id="currencyId" 
-                                        [(ngModel)]="companyBalance.currencyId" 
-                                        >
-                                        <nb-option *ngFor="let currency of currencies;" [value]="currency.id">{{ currency.name}}</nb-option>
-                                    </nb-select>
+                                    <ejs-dropdownlist name="currencyId" id="currencyId" [dataSource]='currencies' [fields]='currencyFields'
+                                        cssClass="as-sy-input" [enableRtl]='true' [(ngModel)]="companyBalance.currencyId"
+                                        ></ejs-dropdownlist>
                                 </div>
                             </div>
                         </div>
@@ -51,16 +47,23 @@
                                     {{ "Balance" | localize }}
                                 </label>
                                 <div  class="col-md-9">
-                                    <input nbInput type="number" class="form-control"
-                                    name="balance" 
-                                    id="balance" 
-                                    [(ngModel)]="companyBalance.balance" 
-                                    />
+                                    <ejs-numerictextbox format='N' name="balance" [enableRtl]="true" cssClass="as-sy-input" id="balance"
+                                    [(ngModel)]="companyBalance.balance" ></ejs-numerictextbox>
+                                    
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="col-md-2">
+                            <ejs-switch 
+                            name="balance" 
+                            id="balance"
+                            [enableRtl]='true'
+                            [(ngModel)]="forHim"></ejs-switch>
+                            <label class="col-md-3 col-form-label" for="forHim">
+                                {{ "ForHim" | localize }}
+                            </label>
+                        </div>
+                        <div class="col-md-1">
                             <a nbButton shape="round" status="primary" (click)="addCompanyBalance($event)"><i class="fa fa-plus"></i></a>
                         </div>
                     </div>
@@ -69,15 +72,16 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                    <th>{{'Balance' | localize}}</th>
-                                    <th>{{'Currency' | localize}}</th>
-                                    <th></th>
+                                        <th>{{'Currency' | localize}}</th>
+                                        <th>{{'Balance' | localize}}</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let companyBalance of company.companyBalances" >
-                                        <td><span class="v-text-primary"> {{companyBalance.balance}}</span></td>
                                         <td><span class="v-text-primary"> {{getCurrencyName(companyBalance.currencyId)}}</span></td>
+                                        <td><span class="v-text-primary"> {{getBalance(companyBalance.balance)}}</span></td>
+                                        
                                         <td><span><a  (click)="removeCompanyBalance(companyBalance.currencyId)"><nb-icon status="danger" icon="trash-2-outline"></nb-icon></a></span></td>
                                     </tr>
                                 </tbody>

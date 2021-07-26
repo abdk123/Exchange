@@ -18,6 +18,11 @@ const routes: Routes = [{
           .then(m => m.SettingModule),
       },
       {
+        path: 'security',
+        loadChildren: () => import('./security/security.module')
+          .then(m => m.SecurityModule),
+      },
+      {
         path: '**',
         component: NotFoundComponent,
       },

@@ -6,6 +6,7 @@ import { ThemeModule } from '@theme/theme.module';
 import { NbMenuModule } from '@nebular/theme';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { SettingModule } from './setting/setting.module';
+import { SecurityModule } from './security/security.module';
 
 
 @NgModule({
@@ -19,7 +20,7 @@ import { SettingModule } from './setting/setting.module';
     NbMenuModule,
     MiscellaneousModule,
     SettingModule,
-
+    SecurityModule
   ],
   providers: [
     

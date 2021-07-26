@@ -56,4 +56,12 @@ export abstract class AppComponentBase {
     isGranted(permissionName: string): boolean {
         return this.permission.isGranted(permissionName);
     }
+
+    getBalance(value){
+        if(value != undefined)
+        {
+            return Math.abs(value) + ' ' + (value <= 0 ? this.l('ForHim') : this.l('OnHim'));
+        }
+        return 0 + ' ' + this.l("ForHim");
+    }
 }

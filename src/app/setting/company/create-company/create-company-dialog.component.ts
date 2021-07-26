@@ -27,7 +27,8 @@ export class CreateCompanyDialogComponent extends AppComponentBase
   companyBalance: CompanyBalanceDto = new CompanyBalanceDto();
   company: CreateCompanyDto = new CreateCompanyDto();
   currencies: CurrencyDto[] = [];
-
+  public currencyFields: Object = { text: 'name', value: 'id' };
+  forHim: boolean = false;
   @Output() onSave = new EventEmitter<any>();
 
   constructor(
@@ -61,10 +62,12 @@ export class CreateCompanyDialogComponent extends AppComponentBase
         abp.message.error(this.l('BalanceForThisCurrencyAlreadyExist'));
       }else{
         let companyBalance = new CompanyBalanceDto();
-        companyBalance.balance = this.companyBalance.balance;
+
+        companyBalance.balance = this.forHim == true ? - this.companyBalance.balance: this.companyBalance.balance;
         companyBalance.currencyId = this.companyBalance.currencyId;
         this.company.companyBalances.push(companyBalance);
         
+        this.forHim = false;
         this.companyBalance = new CompanyBalanceDto();
       }
     }
@@ -103,4 +106,6 @@ export class CreateCompanyDialogComponent extends AppComponentBase
 
     return '';
   }
+
+  
 }

@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppRouteGuard } from '@shared/auth/auth-route-guard';
+import { ClientComponent } from './client/client.component';
+import { CommisionComponent } from './commision/commision.component';
 import { CompanyComponent } from './company/company.component';
 import { CountryComponent } from './country/country.component';
 import { CurrencyComponent } from './currency/currency.component';
 import { ExpenseComponent } from './expense/expense.component';
 import { IncomeComponent } from './income/income.component';
+import { InitialBalanceComponent } from './initial-balance/initial-balance.component';
 import { SettingComponent } from './setting.component';
 
 const routes: Routes = [{
@@ -28,6 +31,24 @@ const routes: Routes = [{
       path: 'company',
       component: CompanyComponent,
       data: { permission : 'Pages.Companies' },
+      canActivate: [AppRouteGuard]
+    },
+    {
+      path: 'client',
+      component: ClientComponent,
+      data: { permission : 'Pages.Clients' },
+      canActivate: [AppRouteGuard]
+    },
+    {
+      path: 'initial-balance',
+      component: InitialBalanceComponent,
+      data: { permission : 'Pages.InitialBalance' },
+      canActivate: [AppRouteGuard]
+    },
+    {
+      path: 'commision',
+      component: CommisionComponent,
+      data: { permission : 'Pages.Commisions' },
       canActivate: [AppRouteGuard]
     },
     {
