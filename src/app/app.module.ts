@@ -6,6 +6,9 @@ import { ThemeModule } from '@theme/theme.module';
 import { NbMenuModule } from '@nebular/theme';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { SettingModule } from './setting/setting.module';
+import { StatementModule } from './statement/statement.module';
+import { TransferModule } from './transfer/transfer.module';
+import { TreasuryModule } from './treasury/treasury.module';
 import { SecurityModule } from './security/security.module';
 
 
@@ -20,6 +23,9 @@ import { SecurityModule } from './security/security.module';
     NbMenuModule,
     MiscellaneousModule,
     SettingModule,
+    StatementModule,
+    TransferModule,
+    TreasuryModule,
     SecurityModule
   ],
   providers: [

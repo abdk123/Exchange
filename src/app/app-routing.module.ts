@@ -17,6 +17,21 @@ const routes: Routes = [{
         loadChildren: () => import('./setting/setting.module')
           .then(m => m.SettingModule),
       },
+      { 
+        path: 'transfer',
+        loadChildren: () => import('./transfer/transfer.module')
+          .then(m => m.TransferModule),
+      },
+      { 
+        path: 'treasury',
+        loadChildren: () => import('./treasury/treasury.module')
+          .then(m => m.TreasuryModule),
+      },
+      { 
+        path: 'statement',
+        loadChildren: () => import('./statement/statement.module')
+          .then(m => m.StatementModule),
+      },
       {
         path: 'security',
         loadChildren: () => import('./security/security.module')
@@ -27,7 +42,8 @@ const routes: Routes = [{
         component: NotFoundComponent,
       },
     ],
-  }];
+  },
+  ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],

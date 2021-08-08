@@ -64,4 +64,8 @@ export abstract class AppComponentBase {
         }
         return 0 + ' ' + this.l("ForHim");
     }
+
+    numberWithCommas(number){
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 }

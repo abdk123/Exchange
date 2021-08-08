@@ -1,0 +1,254 @@
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-horizontal" autocomplete="off" #createTransferForm="ngForm" (ngSubmit)="save()">
+            <nb-card class="as-case-card">
+                <nb-card-header>
+                    <nb-actions>
+                        <nb-action class="control-item" icon="archive-outline"></nb-action>
+                        <nb-action class="control-item ">
+                            <h5>{{ "Treasury" | localize }}</h5>
+                        </nb-action>
+                    </nb-actions>
+
+                </nb-card-header>
+                <nb-card-body class="as-case-card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label" for="actionType">
+                                    {{ "ActionType" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <ejs-dropdownlist 
+                                    id='actionType' 
+                                    name='actionType' 
+                                    cssClass="as-sy-input"
+                                    [dataSource]='actionTypes' 
+                                    [enableRtl]="true" 
+                                    [fields]='fields' 
+                                    (change)='onChangeActionType($event)'
+                                    required
+                                    [(ngModel)]="actionType.id"
+                                    #actionTypeModel="ngModel" 
+                                    #actionTypeEl
+                                    ></ejs-dropdownlist>
+                                    <abp-validation-summary [control]="actionTypeModel" [controlEl]="actionTypeEl">
+                                    </abp-validation-summary>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label" for="date">
+                                    {{ "Date" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <ejs-datepicker 
+                                    id='date' 
+                                    name='date' 
+                                    cssClass="as-sy-input"
+                                    
+                                    required
+                                    placeholder="{{ 'SelectDate' | localize }}"
+                                    [(ngModel)]="date"
+                                    #dateModel="ngModel" 
+                                    #dateEl
+                                    ></ejs-datepicker>
+                                    <abp-validation-summary [control]="dateModel" [controlEl]="dateEl">
+                                    </abp-validation-summary>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label" for="currency">
+                                    {{ "Currency" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <ejs-dropdownlist 
+                                    id='currency' 
+                                    name='currency' 
+                                    cssClass="as-sy-input"
+                                    [dataSource]='currencies' 
+                                    [enableRtl]="true" 
+                                    [fields]='fields' 
+                                    required
+                                    [(ngModel)]="currency.id"
+                                    #currencyModel="ngModel" 
+                                    #currencyEl
+                                    ></ejs-dropdownlist>
+                                    <abp-validation-summary [control]="currencyModel" [controlEl]="currencyEl">
+                                    </abp-validation-summary>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  -->
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row required">
+                                        <label class="col-md-3 col-form-label" for="mainAccount">
+                                            {{ "MainAccount" | localize }}
+                                        </label>
+                                        <div  class="col-md-9">
+                                            <ejs-dropdownlist 
+                                            id='mainAccount' 
+                                            name='mainAccount' 
+                                            cssClass="as-sy-input"
+                                            [dataSource]='mainAccounts' 
+                                            [enableRtl]="true" 
+                                            [fields]='fields' 
+                                            required
+                                            [(ngModel)]="mainAccount.id"
+                                            #mainAccountModel="ngModel" 
+                                            #mainAccountEl
+                                            ></ejs-dropdownlist>
+                                            <abp-validation-summary [control]="mainAccountModel" [controlEl]="mainAccountEl">
+                                            </abp-validation-summary>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="mainAccount.id == 0">
+                                    <div class="form-group row required">
+                                        <label class="col-md-3 col-form-label" for="fromClient">
+                                            {{ "Client" | localize }}
+                                        </label>
+                                        <div  class="col-md-9">
+                                            <ejs-dropdownlist 
+                                            id='fromClient' 
+                                            name='fromClient' 
+                                            cssClass="as-sy-input"
+                                            [dataSource]='clients' 
+                                            [enableRtl]="true" 
+                                            [fields]='fields' 
+                                            required
+                                            [(ngModel)]="fromClient.id"
+                                            #fromClientModel="ngModel" 
+                                            #fromClientEl
+                                            ></ejs-dropdownlist>
+                                            <abp-validation-summary [control]="fromClientModel" [controlEl]="fromClientEl">
+                                            </abp-validation-summary>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="mainAccount.id == 1">
+                                    <div class="form-group row required">
+                                        <label class="col-md-3 col-form-label" for="fromCompany">
+                                            {{ "FromCompany" | localize }}
+                                        </label>
+                                        <div  class="col-md-9">
+                                            <ejs-dropdownlist 
+                                            id='fromCompany' 
+                                            name='fromCompany' 
+                                            cssClass="as-sy-input"
+                                            [dataSource]='companies' 
+                                            [enableRtl]="true" 
+                                            [fields]='fields' 
+                                            required
+                                            [(ngModel)]="fromCompany.id"
+                                            #fromCompanyModel="ngModel" 
+                                            #fromCompanyEl
+                                            ></ejs-dropdownlist>
+                                            <abp-validation-summary [control]="fromCompanyModel" [controlEl]="fromCompanyEl">
+                                            </abp-validation-summary>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="mainAccount.id == 4">
+                                    <div class="form-group row required">
+                                        <label class="col-md-3 col-form-label" for="beneficiary">
+                                            {{ "Beneficiary" | localize }}
+                                        </label>
+                                        <div  class="col-md-9">
+                                            <ejs-dropdownlist 
+                                            id='beneficiary' 
+                                            name='beneficiary' 
+                                            cssClass="as-sy-input"
+                                            [dataSource]='customers' 
+                                            [enableRtl]="true" 
+                                            [fields]='fields' 
+                                            required
+                                            [(ngModel)]="beneficiary.id"
+                                            #beneficiaryModel="ngModel" 
+                                            #beneficiaryEl
+                                            ></ejs-dropdownlist>
+                                            <abp-validation-summary [control]="beneficiaryModel" [controlEl]="beneficiaryEl">
+                                            </abp-validation-summary>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="mainAccount.id == 3">
+                                    <div class="form-group row required">
+                                        <label class="col-md-3 col-form-label" for="expense">
+                                            {{ "Expense" | localize }}
+                                        </label>
+                                        <div  class="col-md-9">
+                                            <ejs-dropdownlist 
+                                            id='expense' 
+                                            name='expense' 
+                                            cssClass="as-sy-input"
+                                            [dataSource]='expenses' 
+                                            [enableRtl]="true" 
+                                            [fields]='fields' 
+                                            required
+                                            [(ngModel)]="expense.id"
+                                            #expenseModel="ngModel" 
+                                            #expenseEl
+                                            ></ejs-dropdownlist>
+                                            <abp-validation-summary [control]="expenseModel" [controlEl]="expenseEl">
+                                            </abp-validation-summary>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" *ngIf="mainAccount.id == 2">
+                                    <div class="form-group row required">
+                                        <label class="col-md-3 col-form-label" for="icome">
+                                            {{ "Income" | localize }}
+                                        </label>
+                                        <div  class="col-md-9">
+                                            <ejs-dropdownlist 
+                                            id='icome' 
+                                            name='icome' 
+                                            cssClass="as-sy-input"
+                                            [dataSource]='icomes' 
+                                            [enableRtl]="true" 
+                                            [fields]='fields' 
+                                            required
+                                            [(ngModel)]="icome.id"
+                                            #icomeModel="ngModel" 
+                                            #icomeEl
+                                            ></ejs-dropdownlist>
+                                            <abp-validation-summary [control]="icomeModel" [controlEl]="icomeEl">
+                                            </abp-validation-summary>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 balance-box">
+                            <div class="form-group row">
+                                <label class="col-md-5 balance-text col-form-label" for="companyBalance">
+                                    {{ "PreviousCompanyBalance" | localize }}
+                                </label>
+                                <div  class="col-md-7">
+                                    <input class="e-input as-sy-input" type="text" tabindex="-1"  value="{{ getAmountWithCurrency(0) }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-5 balance-text col-form-label" for="companyBalance">
+                                    {{ "CurrentBalance" | localize }}
+                                </label>
+                                <div  class="col-md-7">
+                                    <input class="e-input as-sy-input" type="text" tabindex="-1"  value="{{ getAmountWithCurrency(0) }}" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </form>
+    </div>
+</div>

@@ -58,11 +58,11 @@
                             </e-column>
                             <e-column field="id" headerText="Id" isPrimaryKey="true" [visible]="false"></e-column>
                             <e-column field="currency.name" headerText="{{'Currency' | localize}}" textAlign="center"></e-column>
-                            <e-column field="from" headerText="{{'From' | localize}}" textAlign="center" format='N'></e-column>
-                            <e-column field="to" headerText="{{'To' | localize}}" textAlign="center" format='N'></e-column>
-                            <e-column field="percentage" headerText="{{'Percentage' | localize}}" textAlign="center" format='N'  >
+                            <e-column field="from" headerText="{{'From' | localize}}" textAlign="center" format='N2'></e-column>
+                            <e-column field="to" headerText="{{'To' | localize}}" textAlign="center" format='N2'></e-column>
+                            <e-column field="percentage" headerText="{{'Percentage' | localize}}" textAlign="center" format='N2'  >
                             </e-column>
-                            <e-column field="value" headerText="{{'Value' | localize}}" textAlign="center" format='N'></e-column>
+                            <e-column field="value" headerText="{{'Value' | localize}}" textAlign="center" format='N2'></e-column>
                         </e-columns>
                     </ejs-grid>
                 </nb-card-body>

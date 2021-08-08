@@ -45,6 +45,33 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ],
   },
   {
+    title: 'Transfers',
+    icon: 'swap-outline',
+    children: [
+      {
+        title: 'OutgoingTransfers',
+        link: '/app/transfer/outgoing-transfer',
+      },
+    
+    ],
+  },
+  {
+    title: 'Treasury',
+    icon: 'archive-outline',
+    link: '/app/treasury/treasury-action'
+  },
+  // {
+  //   title: 'Statements',
+  //   icon: 'file-text-outline',
+  //   children: [
+  //     {
+  //       title: 'ClientBalanceStatement',
+  //       link: '/app/statement/client-balance-statement',
+  //     },
+    
+  //   ],
+  // },
+  {
     title: 'Auth',
     icon: 'lock-outline',
     children: [
@@ -58,27 +85,5 @@ export const MENU_ITEMS: NbMenuItem[] = [
       }
     ],
   },
-  //===========
-  // {
-  //   title: 'Auth',
-  //   icon: 'lock-outline',
-  //   children: [
-  //     {
-  //       title: 'Login',
-  //       link: '/auth/login',
-  //     },
-  //     {
-  //       title: 'Register',
-  //       link: '/auth/register',
-  //     },
-  //     {
-  //       title: 'Request Password',
-  //       link: '/auth/request-password',
-  //     },
-  //     {
-  //       title: 'Reset Password',
-  //       link: '/auth/reset-password',
-  //     },
-  //   ],
-  // },
+  
 ];

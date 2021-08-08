@@ -1839,12 +1839,16 @@ export class LocalizationHelper{
                 },
                 "daterangepicker": {
                     "placeholder": "اختيار نطاق التاريخ",
+                    "today": "Today",
                     "startLabel": "تاريخ البدء",
                     "endLabel": "تاريخ الانتهاء",
                     "applyText": "تطبيق",
                     "cancelText": "إلغاء",
                     "selectedDays": "أيام مختارة",
                     "days": "أيام",
+                    "stomRange": 'Stom range',
+                    "startDate": 'Start date',
+                    "endDate": 'End date',
                     "customRange": "نطاق مخصص"
                 },
                 "timepicker": {
