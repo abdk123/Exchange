@@ -2,10 +2,11 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { LocalizationHelper } from '@shared/localization/localization-helper';
 import { ClientDto, ClientServiceProxy, CompanyDto, CompanyServiceProxy, CountryDto, CountryServiceProxy, CurrencyDto, CurrencyServiceProxy, ExpenseDto, ExpenseServiceProxy, IncomeDto, IncomeServiceProxy } from '@shared/service-proxies/service-proxies';
-import { L10n, setCulture } from '@syncfusion/ej2-base';
+import { L10n, setCulture, loadCldr  } from '@syncfusion/ej2-base';
 
-setCulture('en');
+setCulture('ar-SY');
 L10n.load(LocalizationHelper.getArabicResources());
+declare var require: any;
 
 @Component({
   selector: 'app-treasury-action',
@@ -25,9 +26,18 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
   actionType: any;
   beneficiary: any;
   sender: any;
+  destination: any;
   mainAccount: any;
-  expence: ExpenseDto = new ExpenseDto();
+  expense: ExpenseDto = new ExpenseDto();
   income: IncomeDto = new IncomeDto();
+  note: string;
+  instrumentNo: number;
+  amount: number;
+  commission: number;
+  companyCommission: number;
+  receivedAmount:number;
+  identificationNumber: string;
+  issuer: string;
 
   currencies: CurrencyDto[] = [];
   companies: CompanyDto[] = [];
@@ -35,16 +45,14 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
   clients: ClientDto[] = [];
   expenses: ExpenseDto[] = [];
   incomes: IncomeDto[] = [];
-  customers: object[] = [];
+  customers: any;
+  alEexchangeParties: object[] = [];
   paymentTypes: object[] = [];
   actionTypes: object[] = [];
   mainAccounts: object[] = [];
   mainAccountsIncome: object[] = [];
   mainAccountsExpense: object[] = [];
-  amount: number;
-  commission: number;
-  companyCommission: number;
-  receivedAmount:number;
+
 
   public fields: Object = { text: 'name', value: 'id' };
 
@@ -59,16 +67,24 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
     ) 
   { 
     super(injector);
+    loadCldr(
+      require("cldr-data/main/ar-SY/numbers.json"),
+      require("cldr-data/main/ar-SY/ca-gregorian.json"),
+      require("cldr-data/supplemental/numberingSystems.json"),
+      require("cldr-data/main/ar-SY/timeZoneNames.json"),
+      require('cldr-data/supplemental/weekdata.json') // To load the culture based first day of week
+    );
   }
 
   ngOnInit(): void {
+    this.initialExpenses();
+    this.initialIncomes();
     this.initialCurrencies();
     this.initialCompanies();
     this.initialCountries();
     this.initialClients();
-    this.initialExpenses();
-    this.initialIncomes();
-
+    this.initialExchangeParties();
+    
     this.paymentTypes = [
       {'name' : 'نقدي' , 'id' : 0},
       {'name' : 'ذمم' , 'id' : 1},
@@ -146,6 +162,20 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
   initialClients(){
     this._clientAppService.getAll()
     .subscribe(result => this.clients = result);
+  }
+
+  initialExchangeParties(){
+    this.companies.forEach(item => {
+      this.alEexchangeParties.push({'id':item.id,'name':item.name,'group':'شركة'});
+    });
+
+    // this.clients.forEach(item => {
+    //   this.alEexchangeParties.push({'id':item.id,'name':item.name,'group':'عميل'});
+    // });
+
+    // this.customers.forEach(item => {
+    //   this.alEexchangeParties.push({'id':item.id,'name':item.name,'group':' '});
+    // });
   }
 
   save(){

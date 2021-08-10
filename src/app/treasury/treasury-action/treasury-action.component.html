@@ -47,7 +47,7 @@
                                     id='date' 
                                     name='date' 
                                     cssClass="as-sy-input"
-                                    
+                                    locale='ar-SY'
                                     required
                                     placeholder="{{ 'SelectDate' | localize }}"
                                     [(ngModel)]="date"
@@ -83,7 +83,8 @@
                             </div>
                         </div>
                     </div>
-
+                    
+                    <hr />
                     <!--  -->
                     <div class="row">
                         <div class="col-md-8">
@@ -205,23 +206,44 @@
                                 </div>
                                 <div class="col-md-6" *ngIf="mainAccount.id == 2">
                                     <div class="form-group row required">
-                                        <label class="col-md-3 col-form-label" for="icome">
+                                        <label class="col-md-3 col-form-label" for="income">
                                             {{ "Income" | localize }}
                                         </label>
                                         <div  class="col-md-9">
                                             <ejs-dropdownlist 
-                                            id='icome' 
-                                            name='icome' 
+                                            id='income' 
+                                            name='income' 
                                             cssClass="as-sy-input"
-                                            [dataSource]='icomes' 
+                                            [dataSource]='incomes' 
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="icome.id"
-                                            #icomeModel="ngModel" 
-                                            #icomeEl
+                                            [(ngModel)]="income.id"
+                                            #incomeModel="ngModel" 
+                                            #incomeEl
                                             ></ejs-dropdownlist>
-                                            <abp-validation-summary [control]="icomeModel" [controlEl]="icomeEl">
+                                            <abp-validation-summary [control]="incomeModel" [controlEl]="incomeEl">
+                                            </abp-validation-summary>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row required">
+                                        <label class="col-md-3 col-form-label" for="amount">
+                                            {{ "Amount" | localize }}
+                                        </label>
+                                        <div  class="col-md-9">
+                                            <ejs-numerictextbox 
+                                            id='amount' 
+                                            name='amount' 
+                                            cssClass="as-sy-input"
+                                            [enableRtl]="true" 
+                                            required
+                                            [(ngModel)]="amount"
+                                            #amountModel="ngModel" 
+                                            #amountEl
+                                            ></ejs-numerictextbox>
+                                            <abp-validation-summary [control]="amountModel" [controlEl]="amountEl">
                                             </abp-validation-summary>
                                         </div>
                                     </div>
@@ -231,7 +253,7 @@
                         <div class="col-md-4 balance-box">
                             <div class="form-group row">
                                 <label class="col-md-5 balance-text col-form-label" for="companyBalance">
-                                    {{ "PreviousCompanyBalance" | localize }}
+                                    {{ "PreviousBalance" | localize }}
                                 </label>
                                 <div  class="col-md-7">
                                     <input class="e-input as-sy-input" type="text" tabindex="-1"  value="{{ getAmountWithCurrency(0) }}" readonly />
@@ -247,8 +269,128 @@
                             </div>
                         </div>
                     </div>
+                    <hr />
+                    <!--  -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label" for="exchangeParty">
+                                    {{ "ExchangeParty" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <ejs-dropdownlist 
+                                    id='exchangeParty' 
+                                    name='exchangeParty' 
+                                    cssClass="as-sy-input"
+                                    [dataSource]='companies' 
+                                    [enableRtl]="true" 
+                                    [fields]='fields' 
+                                    required
+                                    [(ngModel)]="fromCompany.id"
+                                    #exchangePartyModel="ngModel" 
+                                    #exchangePartyEl
+                                    ></ejs-dropdownlist>
+                                    <abp-validation-summary [control]="exchangePartyModel" [controlEl]="exchangePartyEl">
+                                    </abp-validation-summary>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="instrumentNo">
+                                    {{ "InstrumentNo" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <textarea
+                                    id='instrumentNo' 
+                                    name='instrumentNo' 
+                                    class="e-input as-sy-input"
+                                    autocomplete="off"  
+                                    [(ngModel)]="instrumentNo"
+                                    #instrumentNoModel="ngModel" 
+                                    #instrumentNoEl
+                                    ></textarea>
+                                    <abp-validation-summary [control]="instrumentNoModel" [controlEl]="instrumentNoEl">
+                                    </abp-validation-summary>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="identificationNumber">
+                                    {{ "IdentificationNumber" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <textarea
+                                    id='identificationNumber' 
+                                    name='identificationNumber' 
+                                    class="e-input as-sy-input"
+                                    autocomplete="off"  
+                                    [(ngModel)]="identificationNumber"
+                                    #identificationNumberModel="ngModel" 
+                                    #identificationNumberEl
+                                    ></textarea>
+                                    <abp-validation-summary [control]="identificationNumberModel" [controlEl]="identificationNumberEl">
+                                    </abp-validation-summary>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="issuer">
+                                    {{ "issuer" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <textarea
+                                    id='issuer' 
+                                    name='issuer' 
+                                    class="e-input as-sy-input"
+                                    autocomplete="off"  
+                                    [(ngModel)]="issuer"
+                                    #issuerModel="ngModel" 
+                                    #issuerEl
+                                    ></textarea>
+                                    <abp-validation-summary [control]="issuerModel" [controlEl]="issuerEl">
+                                    </abp-validation-summary>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="note">
+                                    {{ "Note" | localize }}
+                                </label>
+                                <div  class="col-md-9">
+                                    <textarea
+                                    id='note' 
+                                    name='note' 
+                                    class="e-input as-sy-input"
+                                    autocomplete="off"  
+                                    [(ngModel)]="note"
+                                    #noteModel="ngModel" 
+                                    #noteEl
+                                    ></textarea>
+                                    <abp-validation-summary [control]="noteModel" [controlEl]="noteEl">
+                                    </abp-validation-summary>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </nb-card-body>
+                <nb-card-footer>
+                    <button nbButton status="primary" type="submit" >
+                        <nb-icon icon="save"></nb-icon>
+                        {{ 'Save' | localize }}
+                    </button>
+                </nb-card-footer>
             </nb-card>
         </form>
     </div>
 </div>
+
+<!-- <ejs-dropdownlist id='dropdownlist-template' [dataSource]='data' [fields]='fields' [sortOrder]='sorting' [query]='query' [popupHeight]='height' [placeholder]='text' [itemTemplate]='itemTemplate'>
+    <ng-template #itemTemplate="" let-data="">
+        <span><span class='name'> {{data.FirstName}}</span><span class ='city'>{{data.City}}</span></span>
+    </ng-template>
+</ejs-dropdownlist> -->

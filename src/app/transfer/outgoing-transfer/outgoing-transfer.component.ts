@@ -28,6 +28,8 @@ export class OutgoingTransferComponent  extends AppComponentBase implements OnIn
   commission: number = 0;
   companyCommission: number = 0;
   receivedAmount:number = 0;
+  reason: string ;
+  note: string ;
 
   currencies: CurrencyDto[] = [];
   companies: CompanyDto[] = [];

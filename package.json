@@ -94,6 +94,7 @@
     "chart.js": "2.7.1",
     "ckeditor": "4.7.3",
     "classlist.js": "1.1.20150312",
+    "cldr-data": "^36.0.0",
     "core-js": "^3.16.0",
     "echarts": "^4.0.2",
     "eva-icons": "^1.1.3",
