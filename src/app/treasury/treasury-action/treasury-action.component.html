@@ -28,7 +28,7 @@
                                     [fields]='fields' 
                                     (change)='onChangeActionType($event)'
                                     required
-                                    [(ngModel)]="actionType.id"
+                                    [(ngModel)]="treasuryAction.actionType"
                                     #actionTypeModel="ngModel" 
                                     #actionTypeEl
                                     ></ejs-dropdownlist>
@@ -50,7 +50,7 @@
                                     locale='ar-SY'
                                     required
                                     placeholder="{{ 'SelectDate' | localize }}"
-                                    [(ngModel)]="date"
+                                    [(ngModel)]="treasuryAction.date"
                                     #dateModel="ngModel" 
                                     #dateEl
                                     ></ejs-datepicker>
@@ -73,7 +73,7 @@
                                     [enableRtl]="true" 
                                     [fields]='fields' 
                                     required
-                                    [(ngModel)]="currency.id"
+                                    [(ngModel)]="treasuryAction.currencyId"
                                     #currencyModel="ngModel" 
                                     #currencyEl
                                     ></ejs-dropdownlist>
@@ -103,7 +103,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="mainAccount.id"
+                                            [(ngModel)]="mainAccount"
                                             #mainAccountModel="ngModel" 
                                             #mainAccountEl
                                             ></ejs-dropdownlist>
@@ -112,7 +112,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount.id == 0">
+                                <div class="col-md-6" *ngIf="mainAccount == 0">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="fromClient">
                                             {{ "Client" | localize }}
@@ -126,7 +126,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="fromClient.id"
+                                            [(ngModel)]="treasuryAction.MainAccountClient"
                                             #fromClientModel="ngModel" 
                                             #fromClientEl
                                             ></ejs-dropdownlist>
@@ -135,7 +135,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount.id == 1">
+                                <div class="col-md-6" *ngIf="mainAccount == 1">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="fromCompany">
                                             {{ "FromCompany" | localize }}
@@ -158,7 +158,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount.id == 4">
+                                <div class="col-md-6" *ngIf="mainAccount == 4">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="beneficiary">
                                             {{ "Beneficiary" | localize }}
@@ -181,7 +181,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount.id == 3">
+                                <div class="col-md-6" *ngIf="mainAccount == 3">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="expense">
                                             {{ "Expense" | localize }}
@@ -204,7 +204,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount.id == 2">
+                                <div class="col-md-6" *ngIf="mainAccount == 2">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="income">
                                             {{ "Income" | localize }}
@@ -239,7 +239,7 @@
                                             cssClass="as-sy-input"
                                             [enableRtl]="true" 
                                             required
-                                            [(ngModel)]="amount"
+                                            [(ngModel)]="treasuryAction.amount"
                                             #amountModel="ngModel" 
                                             #amountEl
                                             ></ejs-numerictextbox>
@@ -282,14 +282,21 @@
                                     id='exchangeParty' 
                                     name='exchangeParty' 
                                     cssClass="as-sy-input"
-                                    [dataSource]='companies' 
+                                    [dataSource]='exchangeParties' 
                                     [enableRtl]="true" 
                                     [fields]='fields' 
                                     required
-                                    [(ngModel)]="fromCompany.id"
+                                    [(ngModel)]="exchangeParty.id"
                                     #exchangePartyModel="ngModel" 
                                     #exchangePartyEl
-                                    ></ejs-dropdownlist>
+                                    >
+                                    <ng-template #itemTemplate let-data>
+                                        <div>
+                                            <span>{{data.name}}</span>
+                                            <span style="float: left;">{{l(data.group)}}</span>
+                                        </div>
+                                    </ng-template>
+                                </ejs-dropdownlist>
                                     <abp-validation-summary [control]="exchangePartyModel" [controlEl]="exchangePartyEl">
                                     </abp-validation-summary>
                                 </div>
@@ -306,7 +313,7 @@
                                     name='instrumentNo' 
                                     class="e-input as-sy-input"
                                     autocomplete="off"  
-                                    [(ngModel)]="instrumentNo"
+                                    [(ngModel)]="treasuryAction.instrumentNo"
                                     #instrumentNoModel="ngModel" 
                                     #instrumentNoEl
                                     ></textarea>
@@ -326,7 +333,7 @@
                                     name='identificationNumber' 
                                     class="e-input as-sy-input"
                                     autocomplete="off"  
-                                    [(ngModel)]="identificationNumber"
+                                    [(ngModel)]="treasuryAction.identificationNumber"
                                     #identificationNumberModel="ngModel" 
                                     #identificationNumberEl
                                     ></textarea>
@@ -338,7 +345,7 @@
                         <div class="col-md-4">
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="issuer">
-                                    {{ "issuer" | localize }}
+                                    {{ "Issuer" | localize }}
                                 </label>
                                 <div  class="col-md-9">
                                     <textarea
@@ -346,7 +353,7 @@
                                     name='issuer' 
                                     class="e-input as-sy-input"
                                     autocomplete="off"  
-                                    [(ngModel)]="issuer"
+                                    [(ngModel)]="treasuryAction.issuer"
                                     #issuerModel="ngModel" 
                                     #issuerEl
                                     ></textarea>
@@ -366,7 +373,7 @@
                                     name='note' 
                                     class="e-input as-sy-input"
                                     autocomplete="off"  
-                                    [(ngModel)]="note"
+                                    [(ngModel)]="treasuryAction.note"
                                     #noteModel="ngModel" 
                                     #noteEl
                                     ></textarea>

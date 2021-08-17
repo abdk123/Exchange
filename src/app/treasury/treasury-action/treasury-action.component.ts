@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { LocalizationHelper } from '@shared/localization/localization-helper';
-import { ClientDto, ClientServiceProxy, CompanyDto, CompanyServiceProxy, CountryDto, CountryServiceProxy, CurrencyDto, CurrencyServiceProxy, ExpenseDto, ExpenseServiceProxy, IncomeDto, IncomeServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ClientDto, ClientServiceProxy, CompanyDto, CompanyServiceProxy, CountryDto, CountryServiceProxy, CurrencyDto, CurrencyServiceProxy, ExchangePartyDto, ExpenseDto, ExpenseServiceProxy, IncomeDto, IncomeServiceProxy, TreasuryActionDto, TreasuryActionServiceProxy } from '@shared/service-proxies/service-proxies';
 import { L10n, setCulture, loadCldr  } from '@syncfusion/ej2-base';
 
 setCulture('ar-SY');
@@ -16,29 +16,10 @@ declare var require: any;
 export class TreasuryActionComponent  extends AppComponentBase implements OnInit {
 
   date: Date ;
-  currency: CurrencyDto = new CurrencyDto();
-  toCompany: CompanyDto = new CompanyDto();
-  fromCompany: CompanyDto = new CompanyDto();
-  fromClient: ClientDto = new ClientDto();
-  country: CountryDto = new CountryDto();
-  balance: number;
-  paymentType: any;
-  actionType: any;
-  beneficiary: any;
-  sender: any;
-  destination: any;
-  mainAccount: any;
-  expense: ExpenseDto = new ExpenseDto();
-  income: IncomeDto = new IncomeDto();
-  note: string;
-  instrumentNo: number;
-  amount: number;
-  commission: number;
-  companyCommission: number;
-  receivedAmount:number;
-  identificationNumber: string;
-  issuer: string;
-
+  treasuryAction: TreasuryActionDto = new TreasuryActionDto();
+  exchangeParty:ExchangePartyDto = new ExchangePartyDto();
+  mainAccount: number;
+  
   currencies: CurrencyDto[] = [];
   companies: CompanyDto[] = [];
   countries: CountryDto[] = [];
@@ -52,13 +33,14 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
   mainAccounts: object[] = [];
   mainAccountsIncome: object[] = [];
   mainAccountsExpense: object[] = [];
-
+  exchangeParties: ExchangePartyDto[] = [];
 
   public fields: Object = { text: 'name', value: 'id' };
 
   constructor(
     injector: Injector,
     private _currencyAppService: CurrencyServiceProxy,
+    private _treasuryActionAppService: TreasuryActionServiceProxy,
     private _companyAppService: CompanyServiceProxy,
     private _countryAppService: CountryServiceProxy,
     private _clientAppService: ClientServiceProxy,
@@ -77,6 +59,8 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
   }
 
   ngOnInit(): void {
+    this.initialExchangeParties();
+    this.initialMainAccounts();
     this.initialExpenses();
     this.initialIncomes();
     this.initialCurrencies();
@@ -96,20 +80,16 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
       {'name' : 'قبض' , 'id' : 1}
     ];
 
-    this.paymentType = {'name' : 'نقدي' , 'id' : 0};
-    this.actionType = {'name' : 'صرف' , 'id' : 0};
-    this.mainAccount = {'name' : 'ذمم عملاء' , 'id' : 0};
-
     this.customers = [
       {'name' : 'محمد' , 'id' : 1 , 'phoneNumber' : '' , 'Address' : ''},
       {'name' : 'علي' , 'id' : 2 , 'phoneNumber' : '' , 'Address' : ''},
     ];
 
-    this.beneficiary = {'name' : 'محمد' , 'id' : 1 , 'phoneNumber' : '' , 'Address' : ''};
-    this.sender = {'name' : 'علي' , 'id' : 2 , 'phoneNumber' : '' , 'Address' : ''};
 
-    this.initialMainAccounts();
+    
   }
+
+  
 
   initialMainAccounts(){
     this.mainAccountsIncome = [
@@ -125,7 +105,7 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
       {'name' : 'حوالات مباشرة' , 'id' : 4},
     ];
 
-    if(this.actionType.id == 0){
+    if(this.treasuryAction.actionType == 0){
       this.mainAccounts = this.mainAccountsExpense;
     }else{
       this.mainAccounts = this.mainAccountsIncome;
@@ -165,17 +145,8 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
   }
 
   initialExchangeParties(){
-    this.companies.forEach(item => {
-      this.alEexchangeParties.push({'id':item.id,'name':item.name,'group':'شركة'});
-    });
-
-    // this.clients.forEach(item => {
-    //   this.alEexchangeParties.push({'id':item.id,'name':item.name,'group':'عميل'});
-    // });
-
-    // this.customers.forEach(item => {
-    //   this.alEexchangeParties.push({'id':item.id,'name':item.name,'group':' '});
-    // });
+    this._treasuryActionAppService.getExchangeParties()
+    .subscribe(result => this.exchangeParties = result);
   }
 
   save(){
@@ -193,8 +164,9 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
   }
 
   getAmountWithCurrency(number){
-    if(this.currency.id != undefined){
-      let selectedCurrency = this.currencies.find( c => c.id == this.currency.id);
+    let currency = this.treasuryAction.currency;
+    if(currency != undefined){
+      let selectedCurrency = this.currencies.find( c => c.id == currency.id);
       return this.numberWithCommas(number) + '  ' + selectedCurrency.name;
     }
       

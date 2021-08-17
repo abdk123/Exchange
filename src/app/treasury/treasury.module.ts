@@ -16,6 +16,7 @@ import { TreasuryActionComponent } from './treasury-action/treasury-action.compo
 import { CalendarModule, DatePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { NbActionsModule, NbAlertModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbSelectModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { TreasuryActionServiceProxy } from '@shared/service-proxies/service-proxies';
 
 const SYNCFUSION_MODULES = [
   GridModule,
@@ -69,6 +70,7 @@ const NB_MODULES = [
   ],
   providers: [
     ...SYNCFUSION_SERVICES,
+    TreasuryActionServiceProxy
   ],
   entryComponents: [
 
