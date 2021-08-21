@@ -484,6 +484,67 @@ export class ClientServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @param clientId (optional) 
+     * @param currencyId (optional) 
+     * @return Success
+     */
+    getCurrentBalance(clientId: number | undefined, currencyId: number | undefined): Observable<ClientBalanceDto> {
+        let url_ = this.baseUrl + "/api/services/app/Client/GetCurrentBalance?";
+        if (clientId === null)
+            throw new Error("The parameter 'clientId' cannot be null.");
+        else if (clientId !== undefined)
+            url_ += "ClientId=" + encodeURIComponent("" + clientId) + "&";
+        if (currencyId === null)
+            throw new Error("The parameter 'currencyId' cannot be null.");
+        else if (currencyId !== undefined)
+            url_ += "CurrencyId=" + encodeURIComponent("" + currencyId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCurrentBalance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCurrentBalance(<any>response_);
+                } catch (e) {
+                    return <Observable<ClientBalanceDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ClientBalanceDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCurrentBalance(response: HttpResponseBase): Observable<ClientBalanceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ClientBalanceDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ClientBalanceDto>(<any>null);
+    }
 }
 
 @Injectable()
@@ -2064,6 +2125,76 @@ export class CurrencyServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class CustomerServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getTreasuryActionBeneficiaries(): Observable<CustomerDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/GetTreasuryActionBeneficiaries";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTreasuryActionBeneficiaries(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTreasuryActionBeneficiaries(<any>response_);
+                } catch (e) {
+                    return <Observable<CustomerDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CustomerDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetTreasuryActionBeneficiaries(response: HttpResponseBase): Observable<CustomerDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(CustomerDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CustomerDto[]>(<any>null);
     }
 }
 
@@ -6937,6 +7068,49 @@ export interface ICreateCurrencyDto {
     name: string | undefined;
 }
 
+export class CustomerDto implements ICustomerDto {
+    id: number;
+
+    constructor(data?: ICustomerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CustomerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CustomerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): CustomerDto {
+        const json = this.toJSON();
+        let result = new CustomerDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICustomerDto {
+    id: number;
+}
+
 export class ExpenseDto implements IExpenseDto {
     name: string | undefined;
     id: number;
@@ -8516,125 +8690,19 @@ export interface IExternalAuthenticateResultModel {
     waitingForActivation: boolean;
 }
 
-export enum TreasuryActionType {
-    _0 = 0,
-    _1 = 1,
-}
-
-export enum MainAccountType {
-    _0 = 0,
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
-    _4 = 4,
-}
-
-export class TreasuryDto implements ITreasuryDto {
-    name: string | undefined;
-    id: number;
-
-    constructor(data?: ITreasuryDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): TreasuryDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new TreasuryDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): TreasuryDto {
-        const json = this.toJSON();
-        let result = new TreasuryDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITreasuryDto {
-    name: string | undefined;
-    id: number;
-}
-
-export class IncomeTransferDetailDto implements IIncomeTransferDetailDto {
-
-    constructor(data?: IIncomeTransferDetailDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-    }
-
-    static fromJS(data: any): IncomeTransferDetailDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new IncomeTransferDetailDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        return data; 
-    }
-
-    clone(): IncomeTransferDetailDto {
-        const json = this.toJSON();
-        let result = new IncomeTransferDetailDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IIncomeTransferDetailDto {
-}
-
 export class TreasuryActionDto implements ITreasuryActionDto {
-    actionType: TreasuryActionType;
-    date: moment.Moment;
-    mainAccount: MainAccountType;
+    actionType: number;
+    date: string | undefined;
+    mainAccount: number;
     currencyId: number | undefined;
-    currency: CurrencyDto;
     exchangePartyCompanyId: number | undefined;
-    exchangePartyCompany: CompanyDto;
     exchangePartyClientId: number | undefined;
-    exchangePartyClient: ClientDto;
     mainAccountCompanyId: number | undefined;
-    mainAccountCompany: CompanyDto;
     mainAccountClientId: number | undefined;
-    mainAccountClient: ClientDto;
     expenseId: number | undefined;
-    expense: ExpenseDto;
     incomeId: number | undefined;
-    income: IncomeDto;
     treasuryId: number | undefined;
-    treasury: TreasuryDto;
     incomeTransferDetailId: number | undefined;
-    incomeTransferDetail: IncomeTransferDetailDto;
     amount: number;
     note: string | undefined;
     instrumentNo: string | undefined;
@@ -8654,26 +8722,17 @@ export class TreasuryActionDto implements ITreasuryActionDto {
     init(_data?: any) {
         if (_data) {
             this.actionType = _data["actionType"];
-            this.date = _data["date"] ? moment(_data["date"].toString()) : <any>undefined;
+            this.date = _data["date"];
             this.mainAccount = _data["mainAccount"];
             this.currencyId = _data["currencyId"];
-            this.currency = _data["currency"] ? CurrencyDto.fromJS(_data["currency"]) : <any>undefined;
             this.exchangePartyCompanyId = _data["exchangePartyCompanyId"];
-            this.exchangePartyCompany = _data["exchangePartyCompany"] ? CompanyDto.fromJS(_data["exchangePartyCompany"]) : <any>undefined;
             this.exchangePartyClientId = _data["exchangePartyClientId"];
-            this.exchangePartyClient = _data["exchangePartyClient"] ? ClientDto.fromJS(_data["exchangePartyClient"]) : <any>undefined;
             this.mainAccountCompanyId = _data["mainAccountCompanyId"];
-            this.mainAccountCompany = _data["mainAccountCompany"] ? CompanyDto.fromJS(_data["mainAccountCompany"]) : <any>undefined;
             this.mainAccountClientId = _data["mainAccountClientId"];
-            this.mainAccountClient = _data["mainAccountClient"] ? ClientDto.fromJS(_data["mainAccountClient"]) : <any>undefined;
             this.expenseId = _data["expenseId"];
-            this.expense = _data["expense"] ? ExpenseDto.fromJS(_data["expense"]) : <any>undefined;
             this.incomeId = _data["incomeId"];
-            this.income = _data["income"] ? IncomeDto.fromJS(_data["income"]) : <any>undefined;
             this.treasuryId = _data["treasuryId"];
-            this.treasury = _data["treasury"] ? TreasuryDto.fromJS(_data["treasury"]) : <any>undefined;
             this.incomeTransferDetailId = _data["incomeTransferDetailId"];
-            this.incomeTransferDetail = _data["incomeTransferDetail"] ? IncomeTransferDetailDto.fromJS(_data["incomeTransferDetail"]) : <any>undefined;
             this.amount = _data["amount"];
             this.note = _data["note"];
             this.instrumentNo = _data["instrumentNo"];
@@ -8693,26 +8752,17 @@ export class TreasuryActionDto implements ITreasuryActionDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["actionType"] = this.actionType;
-        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["date"] = this.date;
         data["mainAccount"] = this.mainAccount;
         data["currencyId"] = this.currencyId;
-        data["currency"] = this.currency ? this.currency.toJSON() : <any>undefined;
         data["exchangePartyCompanyId"] = this.exchangePartyCompanyId;
-        data["exchangePartyCompany"] = this.exchangePartyCompany ? this.exchangePartyCompany.toJSON() : <any>undefined;
         data["exchangePartyClientId"] = this.exchangePartyClientId;
-        data["exchangePartyClient"] = this.exchangePartyClient ? this.exchangePartyClient.toJSON() : <any>undefined;
         data["mainAccountCompanyId"] = this.mainAccountCompanyId;
-        data["mainAccountCompany"] = this.mainAccountCompany ? this.mainAccountCompany.toJSON() : <any>undefined;
         data["mainAccountClientId"] = this.mainAccountClientId;
-        data["mainAccountClient"] = this.mainAccountClient ? this.mainAccountClient.toJSON() : <any>undefined;
         data["expenseId"] = this.expenseId;
-        data["expense"] = this.expense ? this.expense.toJSON() : <any>undefined;
         data["incomeId"] = this.incomeId;
-        data["income"] = this.income ? this.income.toJSON() : <any>undefined;
         data["treasuryId"] = this.treasuryId;
-        data["treasury"] = this.treasury ? this.treasury.toJSON() : <any>undefined;
         data["incomeTransferDetailId"] = this.incomeTransferDetailId;
-        data["incomeTransferDetail"] = this.incomeTransferDetail ? this.incomeTransferDetail.toJSON() : <any>undefined;
         data["amount"] = this.amount;
         data["note"] = this.note;
         data["instrumentNo"] = this.instrumentNo;
@@ -8731,27 +8781,18 @@ export class TreasuryActionDto implements ITreasuryActionDto {
 }
 
 export interface ITreasuryActionDto {
-    actionType: TreasuryActionType;
-    date: moment.Moment;
-    mainAccount: MainAccountType;
+    actionType: number;
+    date: string | undefined;
+    mainAccount: number;
     currencyId: number | undefined;
-    currency: CurrencyDto;
     exchangePartyCompanyId: number | undefined;
-    exchangePartyCompany: CompanyDto;
     exchangePartyClientId: number | undefined;
-    exchangePartyClient: ClientDto;
     mainAccountCompanyId: number | undefined;
-    mainAccountCompany: CompanyDto;
     mainAccountClientId: number | undefined;
-    mainAccountClient: ClientDto;
     expenseId: number | undefined;
-    expense: ExpenseDto;
     incomeId: number | undefined;
-    income: IncomeDto;
     treasuryId: number | undefined;
-    treasury: TreasuryDto;
     incomeTransferDetailId: number | undefined;
-    incomeTransferDetail: IncomeTransferDetailDto;
     amount: number;
     note: string | undefined;
     instrumentNo: string | undefined;
@@ -8808,6 +8849,53 @@ export class ExchangePartyDto implements IExchangePartyDto {
 export interface IExchangePartyDto {
     name: string | undefined;
     group: string | undefined;
+    id: number;
+}
+
+export class TreasuryDto implements ITreasuryDto {
+    name: string | undefined;
+    id: number;
+
+    constructor(data?: ITreasuryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): TreasuryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new TreasuryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): TreasuryDto {
+        const json = this.toJSON();
+        let result = new TreasuryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITreasuryDto {
+    name: string | undefined;
     id: number;
 }
 

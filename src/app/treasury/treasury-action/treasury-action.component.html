@@ -72,6 +72,7 @@
                                     [dataSource]='currencies' 
                                     [enableRtl]="true" 
                                     [fields]='fields' 
+                                    (change)="onCurrencyChange($event)"
                                     required
                                     [(ngModel)]="treasuryAction.currencyId"
                                     #currencyModel="ngModel" 
@@ -86,10 +87,9 @@
                     
                     <hr />
                     <!--  -->
-                    <div class="row">
-                        <div class="col-md-8">
+                        
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="mainAccount">
                                             {{ "MainAccount" | localize }}
@@ -101,9 +101,10 @@
                                             cssClass="as-sy-input"
                                             [dataSource]='mainAccounts' 
                                             [enableRtl]="true" 
-                                            [fields]='fields' 
+                                            [fields]='fields'
+                                            (change)='onChangeMainAction($event)' 
                                             required
-                                            [(ngModel)]="mainAccount"
+                                            [(ngModel)]="treasuryAction.mainAccount"
                                             #mainAccountModel="ngModel" 
                                             #mainAccountEl
                                             ></ejs-dropdownlist>
@@ -112,53 +113,73 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount == 0">
+                                <div class="col-md-4" *ngIf="treasuryAction.mainAccount == 0">
                                     <div class="form-group row required">
-                                        <label class="col-md-3 col-form-label" for="fromClient">
+                                        <label class="col-md-3 col-form-label" for="mainAccountClient">
                                             {{ "Client" | localize }}
                                         </label>
                                         <div  class="col-md-9">
                                             <ejs-dropdownlist 
-                                            id='fromClient' 
-                                            name='fromClient' 
+                                            id='mainAccountClient' 
+                                            name='mainAccountClient' 
                                             cssClass="as-sy-input"
                                             [dataSource]='clients' 
+                                            (change)="onClientChange($event)"
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="treasuryAction.MainAccountClient"
-                                            #fromClientModel="ngModel" 
-                                            #fromClientEl
+                                            [(ngModel)]="treasuryAction.mainAccountClientId"
+                                            #mainAccountClientModel="ngModel" 
+                                            #mainAccountClientEl
                                             ></ejs-dropdownlist>
-                                            <abp-validation-summary [control]="fromClientModel" [controlEl]="fromClientEl">
+                                            <abp-validation-summary [control]="mainAccountClientModel" [controlEl]="mainAccountClientEl">
                                             </abp-validation-summary>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount == 1">
+                                <div class="col-md-4" *ngIf="treasuryAction.mainAccount == 1">
                                     <div class="form-group row required">
-                                        <label class="col-md-3 col-form-label" for="fromCompany">
+                                        <label class="col-md-3 col-form-label" for="mainAccountCompany">
                                             {{ "FromCompany" | localize }}
                                         </label>
                                         <div  class="col-md-9">
                                             <ejs-dropdownlist 
-                                            id='fromCompany' 
-                                            name='fromCompany' 
+                                            id='mainAccountCompany' 
+                                            name='mainAccountCompany' 
                                             cssClass="as-sy-input"
                                             [dataSource]='companies' 
+                                            (change)="onCompnyChange($event)"
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="fromCompany.id"
-                                            #fromCompanyModel="ngModel" 
-                                            #fromCompanyEl
+                                            [(ngModel)]="treasuryAction.mainAccountCompanyId"
+                                            #mainAccountCompanyModel="ngModel" 
+                                            #mainAccountCompanyEl
                                             ></ejs-dropdownlist>
-                                            <abp-validation-summary [control]="fromCompanyModel" [controlEl]="fromCompanyEl">
+                                            <abp-validation-summary [control]="mainAccountCompanyModel" [controlEl]="mainAccountCompanyEl">
                                             </abp-validation-summary>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount == 4">
+                                <div class="col-md-4 balance-box" *ngIf="treasuryAction.mainAccount == 0 || treasuryAction.mainAccount == 1">
+                                    <div class="form-group row">
+                                        <label class="col-md-5 balance-text col-form-label" for="companyBalance">
+                                            {{ "PreviousBalance" | localize }}
+                                        </label>
+                                        <div  class="col-md-7">
+                                            <input class="e-input as-sy-input" type="text" tabindex="-1"  value="{{ getBalanceWithCurrency(previousBalance) }}" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-5 balance-text col-form-label" for="companyBalance">
+                                            {{ "CurrentBalance" | localize }}
+                                        </label>
+                                        <div  class="col-md-7">
+                                            <input class="e-input as-sy-input" type="text" tabindex="-1"  value="{{ getBalanceWithCurrency(currentBalance) }}" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="treasuryAction.mainAccount == 4">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="beneficiary">
                                             {{ "Beneficiary" | localize }}
@@ -168,7 +189,7 @@
                                             id='beneficiary' 
                                             name='beneficiary' 
                                             cssClass="as-sy-input"
-                                            [dataSource]='customers' 
+                                            [dataSource]='beneficiaries' 
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
@@ -181,7 +202,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount == 3">
+                                <div class="col-md-4" *ngIf="treasuryAction.mainAccount == 3">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="expense">
                                             {{ "Expense" | localize }}
@@ -195,7 +216,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="expense.id"
+                                            [(ngModel)]="treasuryAction.expenseId"
                                             #expenseModel="ngModel" 
                                             #expenseEl
                                             ></ejs-dropdownlist>
@@ -204,7 +225,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="mainAccount == 2">
+                                <div class="col-md-4" *ngIf="treasuryAction.mainAccount == 2">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="income">
                                             {{ "Income" | localize }}
@@ -218,7 +239,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="income.id"
+                                            [(ngModel)]="treasuryAction.income"
                                             #incomeModel="ngModel" 
                                             #incomeEl
                                             ></ejs-dropdownlist>
@@ -227,7 +248,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="amount">
                                             {{ "Amount" | localize }}
@@ -240,6 +261,7 @@
                                             [enableRtl]="true" 
                                             required
                                             [(ngModel)]="treasuryAction.amount"
+                                            (valueChange)="onAmountChange($event)"
                                             #amountModel="ngModel" 
                                             #amountEl
                                             ></ejs-numerictextbox>
@@ -249,26 +271,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 balance-box">
-                            <div class="form-group row">
-                                <label class="col-md-5 balance-text col-form-label" for="companyBalance">
-                                    {{ "PreviousBalance" | localize }}
-                                </label>
-                                <div  class="col-md-7">
-                                    <input class="e-input as-sy-input" type="text" tabindex="-1"  value="{{ getAmountWithCurrency(0) }}" readonly />
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-md-5 balance-text col-form-label" for="companyBalance">
-                                    {{ "CurrentBalance" | localize }}
-                                </label>
-                                <div  class="col-md-7">
-                                    <input class="e-input as-sy-input" type="text" tabindex="-1"  value="{{ getAmountWithCurrency(0) }}" readonly />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        
+                    
                     <hr />
                     <!--  -->
                     <div class="row">
@@ -286,10 +290,12 @@
                                     [enableRtl]="true" 
                                     [fields]='fields' 
                                     required
+                                    (change)="onExchangePartyChange($event)"
                                     [(ngModel)]="exchangeParty.id"
                                     #exchangePartyModel="ngModel" 
                                     #exchangePartyEl
                                     >
+                                    <ng-template #itemTemplateHeader let-data></ng-template>
                                     <ng-template #itemTemplate let-data>
                                         <div>
                                             <span>{{data.name}}</span>
@@ -308,7 +314,8 @@
                                     {{ "InstrumentNo" | localize }}
                                 </label>
                                 <div  class="col-md-9">
-                                    <textarea
+                                    <input
+                                    type="text"
                                     id='instrumentNo' 
                                     name='instrumentNo' 
                                     class="e-input as-sy-input"
@@ -316,19 +323,20 @@
                                     [(ngModel)]="treasuryAction.instrumentNo"
                                     #instrumentNoModel="ngModel" 
                                     #instrumentNoEl
-                                    ></textarea>
+                                    />
                                     <abp-validation-summary [control]="instrumentNoModel" [controlEl]="instrumentNoEl">
                                     </abp-validation-summary>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" *ngIf="treasuryAction.mainAccount == 4">
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="identificationNumber">
                                     {{ "IdentificationNumber" | localize }}
                                 </label>
                                 <div  class="col-md-9">
-                                    <textarea
+                                    <input
+                                    type="text"
                                     id='identificationNumber' 
                                     name='identificationNumber' 
                                     class="e-input as-sy-input"
@@ -336,19 +344,20 @@
                                     [(ngModel)]="treasuryAction.identificationNumber"
                                     #identificationNumberModel="ngModel" 
                                     #identificationNumberEl
-                                    ></textarea>
+                                    />
                                     <abp-validation-summary [control]="identificationNumberModel" [controlEl]="identificationNumberEl">
                                     </abp-validation-summary>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" *ngIf="treasuryAction.mainAccount == 4">
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="issuer">
                                     {{ "Issuer" | localize }}
                                 </label>
                                 <div  class="col-md-9">
-                                    <textarea
+                                    <input
+                                    type="text"
                                     id='issuer' 
                                     name='issuer' 
                                     class="e-input as-sy-input"
@@ -356,7 +365,7 @@
                                     [(ngModel)]="treasuryAction.issuer"
                                     #issuerModel="ngModel" 
                                     #issuerEl
-                                    ></textarea>
+                                    />
                                     <abp-validation-summary [control]="issuerModel" [controlEl]="issuerEl">
                                     </abp-validation-summary>
                                 </div>
@@ -386,7 +395,7 @@
                     
                 </nb-card-body>
                 <nb-card-footer>
-                    <button nbButton status="primary" type="submit" >
+                    <button nbButton status="primary" type="submit" [disabled]="!createTransferForm.form.valid || saving">
                         <nb-icon icon="save"></nb-icon>
                         {{ 'Save' | localize }}
                     </button>
@@ -396,8 +405,3 @@
     </div>
 </div>
 
-<!-- <ejs-dropdownlist id='dropdownlist-template' [dataSource]='data' [fields]='fields' [sortOrder]='sorting' [query]='query' [popupHeight]='height' [placeholder]='text' [itemTemplate]='itemTemplate'>
-    <ng-template #itemTemplate="" let-data="">
-        <span><span class='name'> {{data.FirstName}}</span><span class ='city'>{{data.City}}</span></span>
-    </ng-template>
-</ejs-dropdownlist> -->

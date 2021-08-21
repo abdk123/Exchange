@@ -14,9 +14,9 @@ import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SwitchModule } from '@syncfusion/ej2-angular-buttons';
 import { TreasuryActionComponent } from './treasury-action/treasury-action.component';
 import { CalendarModule, DatePickerModule } from '@syncfusion/ej2-angular-calendars';
-import { NbActionsModule, NbAlertModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbInputModule, NbSelectModule } from '@nebular/theme';
+import { NbActionsModule, NbAlertModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDatepickerModule, NbDialogModule, NbIconModule, NbInputModule, NbSelectModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { TreasuryActionServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, TreasuryActionServiceProxy } from '@shared/service-proxies/service-proxies';
 
 const SYNCFUSION_MODULES = [
   GridModule,
@@ -51,7 +51,8 @@ const NB_MODULES = [
   NbInputModule,
   NbSelectModule,
   NbAlertModule,
-  NbCheckboxModule
+  NbCheckboxModule,
+  
 ];
 
 @NgModule({
@@ -70,7 +71,8 @@ const NB_MODULES = [
   ],
   providers: [
     ...SYNCFUSION_SERVICES,
-    TreasuryActionServiceProxy
+    TreasuryActionServiceProxy,
+    CustomerServiceProxy
   ],
   entryComponents: [
 
