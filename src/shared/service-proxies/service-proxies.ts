@@ -560,14 +560,25 @@ export class ClientCashFlowServiceProxy {
 
     /**
      * @param clientId (optional) 
+     * @param currencyId (optional) 
+     * @param fromDate (optional) 
+     * @param toDate (optional) 
      * @return Success
      */
-    get(clientId: number | undefined): Observable<ClientCashFlowDto[]> {
+    get(clientId: number | undefined, currencyId: number | undefined, fromDate: moment.Moment | null | undefined, toDate: moment.Moment | null | undefined): Observable<ClientCashFlowDto[]> {
         let url_ = this.baseUrl + "/api/services/app/ClientCashFlow/Get?";
         if (clientId === null)
             throw new Error("The parameter 'clientId' cannot be null.");
         else if (clientId !== undefined)
             url_ += "ClientId=" + encodeURIComponent("" + clientId) + "&";
+        if (currencyId === null)
+            throw new Error("The parameter 'currencyId' cannot be null.");
+        else if (currencyId !== undefined)
+            url_ += "CurrencyId=" + encodeURIComponent("" + currencyId) + "&";
+        if (fromDate !== undefined && fromDate !== null)
+            url_ += "FromDate=" + encodeURIComponent(fromDate ? "" + fromDate.toJSON() : "") + "&";
+        if (toDate !== undefined && toDate !== null)
+            url_ += "ToDate=" + encodeURIComponent(toDate ? "" + toDate.toJSON() : "") + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -619,6 +630,62 @@ export class ClientCashFlowServiceProxy {
             }));
         }
         return _observableOf<ClientCashFlowDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getForGrid(body: DataManagerRequest | undefined): Observable<ReadGrudDto> {
+        let url_ = this.baseUrl + "/api/services/app/ClientCashFlow/GetForGrid";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForGrid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForGrid(<any>response_);
+                } catch (e) {
+                    return <Observable<ReadGrudDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ReadGrudDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetForGrid(response: HttpResponseBase): Observable<ReadGrudDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReadGrudDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ReadGrudDto>(<any>null);
     }
 }
 
@@ -1311,6 +1378,209 @@ export class CompanyServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param companyId (optional) 
+     * @param currencyId (optional) 
+     * @return Success
+     */
+    getCurrentBalance(companyId: number | undefined, currencyId: number | undefined): Observable<CompanyBalanceDto> {
+        let url_ = this.baseUrl + "/api/services/app/Company/GetCurrentBalance?";
+        if (companyId === null)
+            throw new Error("The parameter 'companyId' cannot be null.");
+        else if (companyId !== undefined)
+            url_ += "CompanyId=" + encodeURIComponent("" + companyId) + "&";
+        if (currencyId === null)
+            throw new Error("The parameter 'currencyId' cannot be null.");
+        else if (currencyId !== undefined)
+            url_ += "CurrencyId=" + encodeURIComponent("" + currencyId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCurrentBalance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCurrentBalance(<any>response_);
+                } catch (e) {
+                    return <Observable<CompanyBalanceDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CompanyBalanceDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetCurrentBalance(response: HttpResponseBase): Observable<CompanyBalanceDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CompanyBalanceDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CompanyBalanceDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class CompanyCashFlowServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param companyId (optional) 
+     * @param currencyId (optional) 
+     * @param fromDate (optional) 
+     * @param toDate (optional) 
+     * @return Success
+     */
+    get(companyId: number | undefined, currencyId: number | undefined, fromDate: moment.Moment | null | undefined, toDate: moment.Moment | null | undefined): Observable<CompanyCashFlowDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/CompanyCashFlow/Get?";
+        if (companyId === null)
+            throw new Error("The parameter 'companyId' cannot be null.");
+        else if (companyId !== undefined)
+            url_ += "CompanyId=" + encodeURIComponent("" + companyId) + "&";
+        if (currencyId === null)
+            throw new Error("The parameter 'currencyId' cannot be null.");
+        else if (currencyId !== undefined)
+            url_ += "CurrencyId=" + encodeURIComponent("" + currencyId) + "&";
+        if (fromDate !== undefined && fromDate !== null)
+            url_ += "FromDate=" + encodeURIComponent(fromDate ? "" + fromDate.toJSON() : "") + "&";
+        if (toDate !== undefined && toDate !== null)
+            url_ += "ToDate=" + encodeURIComponent(toDate ? "" + toDate.toJSON() : "") + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<CompanyCashFlowDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CompanyCashFlowDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<CompanyCashFlowDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(CompanyCashFlowDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CompanyCashFlowDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getForGrid(body: DataManagerRequest | undefined): Observable<ReadGrudDto> {
+        let url_ = this.baseUrl + "/api/services/app/CompanyCashFlow/GetForGrid";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForGrid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForGrid(<any>response_);
+                } catch (e) {
+                    return <Observable<ReadGrudDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ReadGrudDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetForGrid(response: HttpResponseBase): Observable<ReadGrudDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReadGrudDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ReadGrudDto>(<any>null);
     }
 }
 
@@ -4396,14 +4666,29 @@ export class TreasuryCashFlowServiceProxy {
 
     /**
      * @param treasuryId (optional) 
+     * @param currencyId (optional) 
+     * @param fromDate (optional) 
+     * @param toDate (optional) 
      * @return Success
      */
-    get(treasuryId: number | undefined): Observable<TreasuryCashFlowDto[]> {
+    get(treasuryId: number | undefined, currencyId: number | undefined, fromDate: moment.Moment | undefined, toDate: moment.Moment | undefined): Observable<TreasuryCashFlowDto[]> {
         let url_ = this.baseUrl + "/api/services/app/TreasuryCashFlow/Get?";
         if (treasuryId === null)
             throw new Error("The parameter 'treasuryId' cannot be null.");
         else if (treasuryId !== undefined)
             url_ += "TreasuryId=" + encodeURIComponent("" + treasuryId) + "&";
+        if (currencyId === null)
+            throw new Error("The parameter 'currencyId' cannot be null.");
+        else if (currencyId !== undefined)
+            url_ += "CurrencyId=" + encodeURIComponent("" + currencyId) + "&";
+        if (fromDate === null)
+            throw new Error("The parameter 'fromDate' cannot be null.");
+        else if (fromDate !== undefined)
+            url_ += "FromDate=" + encodeURIComponent(fromDate ? "" + fromDate.toJSON() : "") + "&";
+        if (toDate === null)
+            throw new Error("The parameter 'toDate' cannot be null.");
+        else if (toDate !== undefined)
+            url_ += "ToDate=" + encodeURIComponent(toDate ? "" + toDate.toJSON() : "") + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4455,6 +4740,62 @@ export class TreasuryCashFlowServiceProxy {
             }));
         }
         return _observableOf<TreasuryCashFlowDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getForGrid(body: DataManagerRequest | undefined): Observable<ReadGrudDto> {
+        let url_ = this.baseUrl + "/api/services/app/TreasuryCashFlow/GetForGrid";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForGrid(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForGrid(<any>response_);
+                } catch (e) {
+                    return <Observable<ReadGrudDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ReadGrudDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetForGrid(response: HttpResponseBase): Observable<ReadGrudDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReadGrudDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ReadGrudDto>(<any>null);
     }
 }
 
@@ -6202,6 +6543,8 @@ export interface ICurrencyDto {
 export class ClientCashFlowDto implements IClientCashFlowDto {
     clientId: number;
     client: ClientDto;
+    commission: number;
+    clientCommission: number;
     date: moment.Moment;
     amount: number;
     currentBalance: number;
@@ -6229,6 +6572,8 @@ export class ClientCashFlowDto implements IClientCashFlowDto {
         if (_data) {
             this.clientId = _data["clientId"];
             this.client = _data["client"] ? ClientDto.fromJS(_data["client"]) : <any>undefined;
+            this.commission = _data["commission"];
+            this.clientCommission = _data["clientCommission"];
             this.date = _data["date"] ? moment(_data["date"].toString()) : <any>undefined;
             this.amount = _data["amount"];
             this.currentBalance = _data["currentBalance"];
@@ -6256,6 +6601,8 @@ export class ClientCashFlowDto implements IClientCashFlowDto {
         data = typeof data === 'object' ? data : {};
         data["clientId"] = this.clientId;
         data["client"] = this.client ? this.client.toJSON() : <any>undefined;
+        data["commission"] = this.commission;
+        data["clientCommission"] = this.clientCommission;
         data["date"] = this.date ? this.date.toISOString() : <any>undefined;
         data["amount"] = this.amount;
         data["currentBalance"] = this.currentBalance;
@@ -6283,6 +6630,8 @@ export class ClientCashFlowDto implements IClientCashFlowDto {
 export interface IClientCashFlowDto {
     clientId: number;
     client: ClientDto;
+    commission: number;
+    clientCommission: number;
     date: moment.Moment;
     amount: number;
     currentBalance: number;
@@ -6713,6 +7062,113 @@ export class CreateCompanyDto implements ICreateCompanyDto {
 export interface ICreateCompanyDto {
     name: string | undefined;
     companyBalances: CompanyBalanceDto[] | undefined;
+}
+
+export class CompanyCashFlowDto implements ICompanyCashFlowDto {
+    companyId: number;
+    company: CompanyDto;
+    commission: number;
+    companyCommission: number;
+    date: moment.Moment;
+    amount: number;
+    currentBalance: number;
+    transactionId: number;
+    transactionType: number;
+    matched: boolean;
+    shaded: boolean | undefined;
+    type: string | undefined;
+    note: string | undefined;
+    instrumentNo: string | undefined;
+    currencyId: number;
+    currency: CurrencyDto;
+    id: number;
+
+    constructor(data?: ICompanyCashFlowDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.companyId = _data["companyId"];
+            this.company = _data["company"] ? CompanyDto.fromJS(_data["company"]) : <any>undefined;
+            this.commission = _data["commission"];
+            this.companyCommission = _data["companyCommission"];
+            this.date = _data["date"] ? moment(_data["date"].toString()) : <any>undefined;
+            this.amount = _data["amount"];
+            this.currentBalance = _data["currentBalance"];
+            this.transactionId = _data["transactionId"];
+            this.transactionType = _data["transactionType"];
+            this.matched = _data["matched"];
+            this.shaded = _data["shaded"];
+            this.type = _data["type"];
+            this.note = _data["note"];
+            this.instrumentNo = _data["instrumentNo"];
+            this.currencyId = _data["currencyId"];
+            this.currency = _data["currency"] ? CurrencyDto.fromJS(_data["currency"]) : <any>undefined;
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): CompanyCashFlowDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyCashFlowDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["companyId"] = this.companyId;
+        data["company"] = this.company ? this.company.toJSON() : <any>undefined;
+        data["commission"] = this.commission;
+        data["companyCommission"] = this.companyCommission;
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["amount"] = this.amount;
+        data["currentBalance"] = this.currentBalance;
+        data["transactionId"] = this.transactionId;
+        data["transactionType"] = this.transactionType;
+        data["matched"] = this.matched;
+        data["shaded"] = this.shaded;
+        data["type"] = this.type;
+        data["note"] = this.note;
+        data["instrumentNo"] = this.instrumentNo;
+        data["currencyId"] = this.currencyId;
+        data["currency"] = this.currency ? this.currency.toJSON() : <any>undefined;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): CompanyCashFlowDto {
+        const json = this.toJSON();
+        let result = new CompanyCashFlowDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICompanyCashFlowDto {
+    companyId: number;
+    company: CompanyDto;
+    commission: number;
+    companyCommission: number;
+    date: moment.Moment;
+    amount: number;
+    currentBalance: number;
+    transactionId: number;
+    transactionType: number;
+    matched: boolean;
+    shaded: boolean | undefined;
+    type: string | undefined;
+    note: string | undefined;
+    instrumentNo: string | undefined;
+    currencyId: number;
+    currency: CurrencyDto;
+    id: number;
 }
 
 export class ChangeUiThemeInput implements IChangeUiThemeInput {
@@ -8802,6 +9258,7 @@ export interface ITreasuryActionDto {
 }
 
 export class ExchangePartyDto implements IExchangePartyDto {
+    exchangePartyId: string | undefined;
     name: string | undefined;
     group: string | undefined;
     id: number;
@@ -8817,6 +9274,7 @@ export class ExchangePartyDto implements IExchangePartyDto {
 
     init(_data?: any) {
         if (_data) {
+            this.exchangePartyId = _data["exchangePartyId"];
             this.name = _data["name"];
             this.group = _data["group"];
             this.id = _data["id"];
@@ -8832,6 +9290,7 @@ export class ExchangePartyDto implements IExchangePartyDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["exchangePartyId"] = this.exchangePartyId;
         data["name"] = this.name;
         data["group"] = this.group;
         data["id"] = this.id;
@@ -8847,6 +9306,7 @@ export class ExchangePartyDto implements IExchangePartyDto {
 }
 
 export interface IExchangePartyDto {
+    exchangePartyId: string | undefined;
     name: string | undefined;
     group: string | undefined;
     id: number;
@@ -8964,8 +9424,7 @@ export interface ITreasuryBalanceDto {
 
 export class TreasuryCashFlowDto implements ITreasuryCashFlowDto {
     name: string | undefined;
-    currencyId: number;
-    currency: CurrencyDto;
+    treasuryId: number;
     date: moment.Moment;
     amount: number;
     currentBalance: number;
@@ -8976,6 +9435,8 @@ export class TreasuryCashFlowDto implements ITreasuryCashFlowDto {
     type: string | undefined;
     note: string | undefined;
     instrumentNo: string | undefined;
+    currencyId: number;
+    currency: CurrencyDto;
     id: number;
 
     constructor(data?: ITreasuryCashFlowDto) {
@@ -8990,8 +9451,7 @@ export class TreasuryCashFlowDto implements ITreasuryCashFlowDto {
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
-            this.currencyId = _data["currencyId"];
-            this.currency = _data["currency"] ? CurrencyDto.fromJS(_data["currency"]) : <any>undefined;
+            this.treasuryId = _data["treasuryId"];
             this.date = _data["date"] ? moment(_data["date"].toString()) : <any>undefined;
             this.amount = _data["amount"];
             this.currentBalance = _data["currentBalance"];
@@ -9002,6 +9462,8 @@ export class TreasuryCashFlowDto implements ITreasuryCashFlowDto {
             this.type = _data["type"];
             this.note = _data["note"];
             this.instrumentNo = _data["instrumentNo"];
+            this.currencyId = _data["currencyId"];
+            this.currency = _data["currency"] ? CurrencyDto.fromJS(_data["currency"]) : <any>undefined;
             this.id = _data["id"];
         }
     }
@@ -9016,8 +9478,7 @@ export class TreasuryCashFlowDto implements ITreasuryCashFlowDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        data["currencyId"] = this.currencyId;
-        data["currency"] = this.currency ? this.currency.toJSON() : <any>undefined;
+        data["treasuryId"] = this.treasuryId;
         data["date"] = this.date ? this.date.toISOString() : <any>undefined;
         data["amount"] = this.amount;
         data["currentBalance"] = this.currentBalance;
@@ -9028,6 +9489,8 @@ export class TreasuryCashFlowDto implements ITreasuryCashFlowDto {
         data["type"] = this.type;
         data["note"] = this.note;
         data["instrumentNo"] = this.instrumentNo;
+        data["currencyId"] = this.currencyId;
+        data["currency"] = this.currency ? this.currency.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -9042,8 +9505,7 @@ export class TreasuryCashFlowDto implements ITreasuryCashFlowDto {
 
 export interface ITreasuryCashFlowDto {
     name: string | undefined;
-    currencyId: number;
-    currency: CurrencyDto;
+    treasuryId: number;
     date: moment.Moment;
     amount: number;
     currentBalance: number;
@@ -9054,6 +9516,8 @@ export interface ITreasuryCashFlowDto {
     type: string | undefined;
     note: string | undefined;
     instrumentNo: string | undefined;
+    currencyId: number;
+    currency: CurrencyDto;
     id: number;
 }
 

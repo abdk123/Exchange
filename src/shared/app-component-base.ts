@@ -60,7 +60,8 @@ export abstract class AppComponentBase {
     getBalance(value){
         if(value != undefined)
         {
-            return this.numberWithCommas(Math.abs(value)) + '/' + (value <= 0 ? this.l('ForHim') : this.l('OnHim'));
+            var realNumber = Math.abs(value);
+            return this.numberWithCommas(realNumber) + '/' + (value <= 0 ? this.l('ForHim') : this.l('OnHim'));
         }
         return 0;
     }

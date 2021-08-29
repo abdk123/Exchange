@@ -60,17 +60,24 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'archive-outline',
     link: '/app/treasury/treasury-action'
   },
-  // {
-  //   title: 'Statements',
-  //   icon: 'file-text-outline',
-  //   children: [
-  //     {
-  //       title: 'ClientBalanceStatement',
-  //       link: '/app/statement/client-balance-statement',
-  //     },
-    
-  //   ],
-  // },
+  {
+    title: 'Statements',
+    icon: 'file-text-outline',
+    children: [
+      {
+        title: 'ClientBalanceStatement',
+        link: '/app/statement/client-balance-statement',
+      },
+      {
+        title: 'CompanyBalanceStatement',
+        link: '/app/statement/company-balance-statement',
+      },
+      {
+        title: 'TreasuryBalanceStatement',
+        link: '/app/statement/treasury-balance-statement',
+      },
+    ],
+  },
   {
     title: 'Auth',
     icon: 'lock-outline',

@@ -9,17 +9,40 @@ import { StatementRoutingModule } from './statement-routing.module';
 import { StatementComponent } from './statement.component';
 import { EditService, FilterService, ForeignKeyService, GridModule, GroupService, PageService, SortService, ToolbarService } from '@syncfusion/ej2-angular-grids';
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
-import { NumericTextBoxModule, UploaderModule } from '@syncfusion/ej2-angular-inputs';
+import { MaskedTextBoxModule, NumericTextBoxModule, TextBoxModule, UploaderModule } from '@syncfusion/ej2-angular-inputs';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SwitchModule } from '@syncfusion/ej2-angular-buttons';
+import { CalendarModule, DatePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { ClientBalanceStatementComponent } from './client-balance-statement/client-balance-statement.component';
+import { NbActionsModule, NbAlertModule, NbButtonModule, NbCardModule, NbDialogModule, NbIconModule, NbInputModule } from '@nebular/theme';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { CompanyBalanceStatementComponent } from './company-balance-statement/company-balance-statement.component';
+import { TreasuryBalanceStatementComponent } from './treasury-balance-statment/treasury-balance-statement.component';
 
+
+const NB_MODULES = [
+  NbActionsModule,
+  NbIconModule,
+  NbEvaIconsModule,
+  NbDialogModule.forChild(),
+  NbCardModule,
+  NbButtonModule,
+  NbInputModule,
+  NbAlertModule,
+  
+];
 const SYNCFUSION_MODULES = [
   GridModule,
   ToolbarModule,
   UploaderModule,
+  TextBoxModule,
   NumericTextBoxModule,
+  CalendarModule,
+  DatePickerModule,
+  MaskedTextBoxModule,
   DropDownListModule,
   SwitchModule 
+  
 ];
 
 const SYNCFUSION_SERVICES = [
@@ -33,7 +56,7 @@ const SYNCFUSION_SERVICES = [
 ];
 
 @NgModule({
-  declarations: [StatementComponent],
+  declarations: [StatementComponent, ClientBalanceStatementComponent, CompanyBalanceStatementComponent, TreasuryBalanceStatementComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -44,6 +67,7 @@ const SYNCFUSION_SERVICES = [
     ThemeModule,
     StatementRoutingModule,
     ...SYNCFUSION_MODULES,
+    ...NB_MODULES
   ],
   providers: [
     ...SYNCFUSION_SERVICES,

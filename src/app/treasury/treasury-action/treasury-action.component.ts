@@ -39,6 +39,7 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
   date: Date = new Date();
 
   public fields: Object = { text: 'name', value: 'id' };
+  public exchangePartyFields: Object = { text: 'name', value: 'exchangePartyId' };
 
   constructor(
     injector: Injector,
@@ -155,7 +156,7 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
       });
   }
 
-  onChangeActionType(args: any){
+  onActionTypeChange(args: any){
     
     let id = args.itemData.id;
     this.mainAccounts = [];
@@ -164,9 +165,19 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
     }else{
       this.mainAccounts = this.mainAccountsIncome;
     }
+
+    //change balance
+    if(this.treasuryAction.currencyId != undefined){
+      if(this.treasuryAction.mainAccountClientId != undefined && this.treasuryAction.mainAccount == 0){
+        this.getBalanceByClient(this.treasuryAction.mainAccountClientId, this.treasuryAction.currencyId);
+
+      }else if(this.treasuryAction.mainAccountCompanyId != undefined && this.treasuryAction.mainAccount == 1){
+        this.getBalanceByClient(this.treasuryAction.mainAccountCompanyId, this.treasuryAction.currencyId);
+      }
+    }
   }
 
-  onChangeMainAction(args:any){
+  onMainActionChange(args:any){
     if(args.itemData != undefined){
       this.treasuryAction.mainAccountClientId = undefined;
       this.treasuryAction.mainAccountCompanyId = undefined;
@@ -253,16 +264,25 @@ export class TreasuryActionComponent  extends AppComponentBase implements OnInit
     this._clientAppService.getCurrentBalance(clientId, currencyId)
     .subscribe(result => {
       this.previousBalance = result.balance;
-      this.currentBalance = this.treasuryAction.amount != undefined ? (result.balance + this.treasuryAction.amount) : result.balance;
+      if(this.treasuryAction.actionType == 0){  //صرف
+        this.currentBalance = this.treasuryAction.amount != undefined ? (result.balance + this.treasuryAction.amount) : result.balance;
+      }else{  //قبض
+        this.currentBalance = this.treasuryAction.amount != undefined ? (result.balance - this.treasuryAction.amount) : result.balance;
+      }
     });
   }
 
   getBalanceByCompany(companyId, currencyId){
-    // this._companyAppService.getCurrentBalance(companyId, currencyId)
-    // .subscribe(result => {
-    //   this.previousBalance = result.balance;
-    //   this.currentBalance = this.treasuryAction.amount != undefined ? (result.balance + this.treasuryAction.amount) : result.balance;
-    // });
+    this._companyAppService.getCurrentBalance(companyId, currencyId)
+    .subscribe(result => {
+      this.previousBalance = result.balance;
+      if(this.treasuryAction.actionType == 0){  //صرف
+        this.currentBalance = this.treasuryAction.amount != undefined ? (result.balance + this.treasuryAction.amount) : result.balance;
+      }else{  //قبض
+        this.currentBalance = this.treasuryAction.amount != undefined ? (result.balance - this.treasuryAction.amount) : result.balance;
+      }
+      
+    });
   }
 
   getBalanceWithCurrency(number){
