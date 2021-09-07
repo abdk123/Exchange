@@ -1,10 +1,11 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { LocalizationHelper } from '@shared/localization/localization-helper';
-import { ClientDto, ClientServiceProxy, CompanyDto, CompanyServiceProxy, CountryDto, CountryServiceProxy, CurrencyDto, CurrencyServiceProxy } from '@shared/service-proxies/service-proxies';
-import { L10n, setCulture } from '@syncfusion/ej2-base';
+import { ClientDto, ClientServiceProxy, CompanyDto, CompanyServiceProxy, CountryDto, CountryServiceProxy, CurrencyDto, CurrencyServiceProxy, CustomerDto, CustomerServiceProxy, OutgoingTransferDto } from '@shared/service-proxies/service-proxies';
+import { L10n, setCulture, loadCldr } from '@syncfusion/ej2-base';
+import { result } from 'lodash-es';
 
-setCulture('en');
+setCulture('ar-SY');
 L10n.load(LocalizationHelper.getArabicResources());
 
 @Component({
@@ -14,32 +15,18 @@ L10n.load(LocalizationHelper.getArabicResources());
 })
 export class OutgoingTransferComponent  extends AppComponentBase implements OnInit {
 
-  date: Date ;
-  currency: CurrencyDto = new CurrencyDto();
-  toCompany: CompanyDto = new CompanyDto();
-  fromCompany: CompanyDto = new CompanyDto();
-  fromClient: ClientDto = new ClientDto();
-  country: CountryDto = new CountryDto();
-  balance: number = 0;
-  paymentType: any;
-  beneficiary: any;
-  sender: any;
-  amount: number = 0;
-  commission: number = 0;
-  companyCommission: number = 0;
-  receivedAmount:number = 0;
-  reason: string ;
-  note: string ;
+  outgoingTransfer: OutgoingTransferDto = new OutgoingTransferDto();
 
   currencies: CurrencyDto[] = [];
   companies: CompanyDto[] = [];
   countries: CountryDto[] = [];
   clients: ClientDto[] = [];
-  customers: object[] = [];
+  customers: CustomerDto[] = [];
   paymentTypes: object[] = [];
 
 
   public fields: Object = { text: 'name', value: 'id' };
+  public autoCompleteFields: Object = { value: 'name' };
 
   constructor(
     injector: Injector,
@@ -47,16 +34,32 @@ export class OutgoingTransferComponent  extends AppComponentBase implements OnIn
     private _companyAppService: CompanyServiceProxy,
     private _countryAppService: CountryServiceProxy,
     private _clientAppService: ClientServiceProxy,
+    private _customerAppService: CustomerServiceProxy,
     ) 
   { 
     super(injector);
+    loadCldr(
+      require("cldr-data/main/ar-SY/numbers.json"),
+      require("cldr-data/main/ar-SY/ca-gregorian.json"),
+      require("cldr-data/supplemental/numberingSystems.json"),
+      require("cldr-data/main/ar-SY/timeZoneNames.json"),
+      require('cldr-data/supplemental/weekdata.json') 
+    );
   }
 
   ngOnInit(): void {
+    this.outgoingTransfer.date = new Date().toISOString();
+    if(this.outgoingTransfer.beneficiary == undefined)
+      this.outgoingTransfer.beneficiary=new CustomerDto();
+
+    if(this.outgoingTransfer.sender == undefined)
+      this.outgoingTransfer.sender=new CustomerDto();
+
     this.initialCurrencies();
     this.initialCompanies();
     this.initialCountries();
     this.initialClients();
+    this.initialCustomers();
 
     this.paymentTypes = [
       {'name' : 'نقدي' , 'id' : 0},
@@ -64,15 +67,7 @@ export class OutgoingTransferComponent  extends AppComponentBase implements OnIn
       {'name' : 'شركة' , 'id' : 2},
     ];
 
-    this.paymentType = {'name' : 'نقدي' , 'id' : 0};
-
-    this.customers = [
-      {'name' : 'محمد' , 'id' : 1 , 'phoneNumber' : '' , 'Address' : ''},
-      {'name' : 'علي' , 'id' : 2 , 'phoneNumber' : '' , 'Address' : ''},
-    ];
-
-    this.beneficiary = {'name' : 'محمد' , 'id' : 1 , 'phoneNumber' : '' , 'Address' : ''};
-    this.sender = {'name' : 'علي' , 'id' : 2 , 'phoneNumber' : '' , 'Address' : ''};
+    this.outgoingTransfer.paymentType = 0;
   }
 
   initialCurrencies(){
@@ -95,17 +90,38 @@ export class OutgoingTransferComponent  extends AppComponentBase implements OnIn
     .subscribe(result => this.clients = result);
   }
 
-  save(){
+  initialCustomers(){
+    this._customerAppService.getAll()
+    .subscribe(result => this.customers = result);
+  }
 
+  save(){
+    this.outgoingTransfer.senderId = this.outgoingTransfer.sender?.id;
+    this.outgoingTransfer.beneficiaryId = this.outgoingTransfer.beneficiary?.id;
+    console.log(this.outgoingTransfer);
   }
 
   getAmountWithCurrency(number){
-    if(this.currency.id != undefined){
-      let selectedCurrency = this.currencies.find( c => c.id == this.currency.id);
+    if(this.outgoingTransfer.currencyId != undefined){
+      let selectedCurrency = this.currencies.find( c => c.id == this.outgoingTransfer.currencyId);
       return this.numberWithCommas(number) + '  ' + selectedCurrency.name;
     }
       
 
       return this.numberWithCommas(number);
   }
+
+  onChangeBeneficiary(args:any){
+    if(args.itemData !=undefined && args.itemData.id != undefined){
+      this.outgoingTransfer.beneficiary = args.itemData;
+    }
+  }
+
+  onChangeSender(args:any){
+    if(args.itemData !=undefined && args.itemData.id != undefined){
+      this.outgoingTransfer.sender = args.itemData;
+    }
+  }
+
+
 }

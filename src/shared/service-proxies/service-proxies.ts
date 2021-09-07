@@ -2412,6 +2412,118 @@ export class CustomerServiceProxy {
     /**
      * @return Success
      */
+    getAll(): Observable<CustomerDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<CustomerDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CustomerDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<CustomerDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(CustomerDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CustomerDto[]>(<any>null);
+    }
+
+    /**
+     * @param symbol (optional) 
+     * @return Success
+     */
+    getByName(symbol: string | null | undefined): Observable<CustomerDto> {
+        let url_ = this.baseUrl + "/api/services/app/Customer/GetByName?";
+        if (symbol !== undefined && symbol !== null)
+            url_ += "symbol=" + encodeURIComponent("" + symbol) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetByName(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetByName(<any>response_);
+                } catch (e) {
+                    return <Observable<CustomerDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CustomerDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetByName(response: HttpResponseBase): Observable<CustomerDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CustomerDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CustomerDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getTreasuryActionBeneficiaries(): Observable<CustomerDto[]> {
         let url_ = this.baseUrl + "/api/services/app/Customer/GetTreasuryActionBeneficiaries";
         url_ = url_.replace(/[?&]$/, "");
@@ -3157,6 +3269,74 @@ export class IncomeServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
+export class OutgoingTransferServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    create(body: OutgoingTransferDto | undefined): Observable<OutgoingTransferDto> {
+        let url_ = this.baseUrl + "/api/services/app/OutgoingTransfer/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<OutgoingTransferDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OutgoingTransferDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<OutgoingTransferDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = OutgoingTransferDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OutgoingTransferDto>(<any>null);
     }
 }
 
@@ -4762,7 +4942,7 @@ export class TreasuryCashFlowServiceProxy {
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetForGrid(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -7525,6 +7705,9 @@ export interface ICreateCurrencyDto {
 }
 
 export class CustomerDto implements ICustomerDto {
+    name: string | undefined;
+    address: string | undefined;
+    phoneNumber: string | undefined;
     id: number;
 
     constructor(data?: ICustomerDto) {
@@ -7538,6 +7721,9 @@ export class CustomerDto implements ICustomerDto {
 
     init(_data?: any) {
         if (_data) {
+            this.name = _data["name"];
+            this.address = _data["address"];
+            this.phoneNumber = _data["phoneNumber"];
             this.id = _data["id"];
         }
     }
@@ -7551,6 +7737,9 @@ export class CustomerDto implements ICustomerDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["address"] = this.address;
+        data["phoneNumber"] = this.phoneNumber;
         data["id"] = this.id;
         return data; 
     }
@@ -7564,6 +7753,9 @@ export class CustomerDto implements ICustomerDto {
 }
 
 export interface ICustomerDto {
+    name: string | undefined;
+    address: string | undefined;
+    phoneNumber: string | undefined;
     id: number;
 }
 
@@ -7839,6 +8031,129 @@ export class CreateIncomeDto implements ICreateIncomeDto {
 
 export interface ICreateIncomeDto {
     name: string | undefined;
+}
+
+export class OutgoingTransferDto implements IOutgoingTransferDto {
+    currencyId: number;
+    beneficiaryId: number | undefined;
+    senderId: number | undefined;
+    paymentType: number;
+    amount: number;
+    commission: number;
+    companyCommission: number;
+    clientCommission: number;
+    date: string | undefined;
+    toCompanyId: number;
+    countryId: number;
+    fromCompanyId: number | undefined;
+    fromClientId: number | undefined;
+    treasuryId: number | undefined;
+    receivedAmount: number;
+    instrumentNo: string | undefined;
+    reason: string | undefined;
+    note: string | undefined;
+    beneficiary: CustomerDto;
+    sender: CustomerDto;
+    id: number;
+
+    constructor(data?: IOutgoingTransferDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.currencyId = _data["currencyId"];
+            this.beneficiaryId = _data["beneficiaryId"];
+            this.senderId = _data["senderId"];
+            this.paymentType = _data["paymentType"];
+            this.amount = _data["amount"];
+            this.commission = _data["commission"];
+            this.companyCommission = _data["companyCommission"];
+            this.clientCommission = _data["clientCommission"];
+            this.date = _data["date"];
+            this.toCompanyId = _data["toCompanyId"];
+            this.countryId = _data["countryId"];
+            this.fromCompanyId = _data["fromCompanyId"];
+            this.fromClientId = _data["fromClientId"];
+            this.treasuryId = _data["treasuryId"];
+            this.receivedAmount = _data["receivedAmount"];
+            this.instrumentNo = _data["instrumentNo"];
+            this.reason = _data["reason"];
+            this.note = _data["note"];
+            this.beneficiary = _data["beneficiary"] ? CustomerDto.fromJS(_data["beneficiary"]) : <any>undefined;
+            this.sender = _data["sender"] ? CustomerDto.fromJS(_data["sender"]) : <any>undefined;
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): OutgoingTransferDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OutgoingTransferDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["currencyId"] = this.currencyId;
+        data["beneficiaryId"] = this.beneficiaryId;
+        data["senderId"] = this.senderId;
+        data["paymentType"] = this.paymentType;
+        data["amount"] = this.amount;
+        data["commission"] = this.commission;
+        data["companyCommission"] = this.companyCommission;
+        data["clientCommission"] = this.clientCommission;
+        data["date"] = this.date;
+        data["toCompanyId"] = this.toCompanyId;
+        data["countryId"] = this.countryId;
+        data["fromCompanyId"] = this.fromCompanyId;
+        data["fromClientId"] = this.fromClientId;
+        data["treasuryId"] = this.treasuryId;
+        data["receivedAmount"] = this.receivedAmount;
+        data["instrumentNo"] = this.instrumentNo;
+        data["reason"] = this.reason;
+        data["note"] = this.note;
+        data["beneficiary"] = this.beneficiary ? this.beneficiary.toJSON() : <any>undefined;
+        data["sender"] = this.sender ? this.sender.toJSON() : <any>undefined;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): OutgoingTransferDto {
+        const json = this.toJSON();
+        let result = new OutgoingTransferDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOutgoingTransferDto {
+    currencyId: number;
+    beneficiaryId: number | undefined;
+    senderId: number | undefined;
+    paymentType: number;
+    amount: number;
+    commission: number;
+    companyCommission: number;
+    clientCommission: number;
+    date: string | undefined;
+    toCompanyId: number;
+    countryId: number;
+    fromCompanyId: number | undefined;
+    fromClientId: number | undefined;
+    treasuryId: number | undefined;
+    receivedAmount: number;
+    instrumentNo: string | undefined;
+    reason: string | undefined;
+    note: string | undefined;
+    beneficiary: CustomerDto;
+    sender: CustomerDto;
+    id: number;
 }
 
 export class ProvinceForDropdownDto implements IProvinceForDropdownDto {

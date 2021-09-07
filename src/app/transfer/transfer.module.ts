@@ -29,7 +29,7 @@ import {
 import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { MaskedTextBoxModule, NumericTextBoxModule, TextBoxModule, UploaderModule } from '@syncfusion/ej2-angular-inputs';
 import { CalendarModule, DatePickerModule } from '@syncfusion/ej2-angular-calendars';
-import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import { AutoCompleteModule, DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SwitchModule } from '@syncfusion/ej2-angular-buttons';
 import { OutgoingTransferComponent } from './outgoing-transfer/outgoing-transfer.component';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
@@ -45,7 +45,8 @@ const SYNCFUSION_MODULES = [
   DatePickerModule,
   MaskedTextBoxModule,
   DropDownListModule,
-  SwitchModule 
+  SwitchModule,
+  AutoCompleteModule 
 ];
 
 const SYNCFUSION_SERVICES = [

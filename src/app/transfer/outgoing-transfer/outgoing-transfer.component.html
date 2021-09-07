@@ -31,10 +31,9 @@
                                             id='date' 
                                             name='date' 
                                             cssClass="as-sy-input"
-                                            
                                             required
                                             placeholder="{{ 'SelectDate' | localize }}"
-                                            [(ngModel)]="date"
+                                            [(ngModel)]="outgoingTransfer.date"
                                             #dateModel="ngModel" 
                                             #dateEl
                                             ></ejs-datepicker>
@@ -57,7 +56,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="currency.id"
+                                            [(ngModel)]="outgoingTransfer.currencyId"
                                             #currencyModel="ngModel" 
                                             #currencyEl
                                             ></ejs-dropdownlist>
@@ -80,7 +79,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="toCompany.id"
+                                            [(ngModel)]="outgoingTransfer.toCompanyId"
                                             #toCompanyModel="ngModel" 
                                             #toCompanyEl
                                             ></ejs-dropdownlist>
@@ -103,7 +102,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="country.id"
+                                            [(ngModel)]="outgoingTransfer.countryId"
                                             #countryModel="ngModel" 
                                             #countryEl
                                             ></ejs-dropdownlist>
@@ -141,9 +140,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div [ngClass]="{'col-md-12' : paymentType.id == 0 , 'col-md-8' : paymentType.id != 0}">
+                        <div [ngClass]="{'col-md-12' : outgoingTransfer.paymentType == 0 , 'col-md-8' : outgoingTransfer.paymentType != 0}">
                             <div class="row">
-                                <div [ngClass]="{'col-md-4' : paymentType.id == 0 , 'col-md-6' : paymentType.id != 0}">
+                                <div [ngClass]="{'col-md-4' : outgoingTransfer.paymentType == 0 , 'col-md-6' : outgoingTransfer.paymentType != 0}">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="name">
                                             {{ "PaymentType" | localize }}
@@ -157,7 +156,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="paymentType.id"
+                                            [(ngModel)]="outgoingTransfer.paymentType"
                                             #paymentTypeModel="ngModel" 
                                             #paymentTypeEl
                                             ></ejs-dropdownlist>
@@ -167,7 +166,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-6" *ngIf="paymentType.id == 1">
+                                <div class="col-md-6" *ngIf="outgoingTransfer.paymentType == 1">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="fromClient">
                                             {{ "Client" | localize }}
@@ -181,7 +180,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="fromClient.id"
+                                            [(ngModel)]="fromClientId"
                                             #fromClientModel="ngModel" 
                                             #fromClientEl
                                             ></ejs-dropdownlist>
@@ -190,7 +189,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" *ngIf="paymentType.id == 2">
+                                <div class="col-md-6" *ngIf="outgoingTransfer.paymentType == 2">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="fromCompany">
                                             {{ "FromCompany" | localize }}
@@ -204,7 +203,7 @@
                                             [enableRtl]="true" 
                                             [fields]='fields' 
                                             required
-                                            [(ngModel)]="fromCompany.id"
+                                            [(ngModel)]="fromCompanyId"
                                             #fromCompanyModel="ngModel" 
                                             #fromCompanyEl
                                             ></ejs-dropdownlist>
@@ -214,29 +213,31 @@
                                     </div>
                                 </div>
                                 
-                                <div [ngClass]="{'col-md-4' : paymentType.id == 0 , 'col-md-6' : paymentType.id != 0}">
+                                <div [ngClass]="{'col-md-4' : outgoingTransfer.paymentType == 0 , 'col-md-6' : outgoingTransfer.paymentType != 0}">
                                     <div class="form-group row required">
                                         <label class="col-md-3 col-form-label" for="sender">
                                             {{ "Sender" | localize }}
                                         </label>
                                         <div  class="col-md-9">
-                                            <ejs-dropdownlist 
+                                            <ejs-autocomplete  
                                             id='sender' 
                                             name='sender' 
                                             cssClass="as-sy-input"
                                             [dataSource]='customers' 
+                                            [autofill]='true'
                                             [enableRtl]="true" 
-                                            [fields]='fields' 
-                                            [(ngModel)]="sender.id"
+                                            [fields]='autoCompleteFields' 
+                                            [(ngModel)]="outgoingTransfer.sender.name"
                                             #senderModel="ngModel" 
+                                            (change)="onChangeSender($event)"
                                             #senderEl
-                                            ></ejs-dropdownlist>
+                                            ></ejs-autocomplete>
                                             <abp-validation-summary [control]="senderModel" [controlEl]="senderEl">
                                             </abp-validation-summary>
                                         </div>
                                     </div>
                                 </div>
-                                <div [ngClass]="{'col-md-4' : paymentType.id == 0 , 'col-md-6' : paymentType.id != 0}">
+                                <div [ngClass]="{'col-md-4' : outgoingTransfer.paymentType == 0 , 'col-md-6' : outgoingTransfer.paymentType != 0}">
                                     <div class="form-group row">
                                         <label class="col-md-3 col-form-label" for="senderPhone">
                                             {{ "SenderPhone" | localize }}
@@ -248,7 +249,7 @@
                                             name='senderPhone' 
                                             class="e-input as-sy-input"
                                             autocomplete="off" 
-                                            [(ngModel)]="sender.phoneNumber"
+                                            [(ngModel)]="outgoingTransfer.sender.phoneNumber"
                                             #senderPhoneModel="ngModel" 
                                             #senderPhoneEl
                                             />
@@ -261,7 +262,7 @@
                             
                         </div>
                         
-                        <div class="col-md-4 balance-box" *ngIf="paymentType.id != 0">
+                        <div class="col-md-4 balance-box" *ngIf="outgoingTransfer.paymentType != 0">
                             <div class="form-group row" >
                                     <label class="col-md-5 balance-text col-form-label" for="companyBalance">
                                         {{ "PreviousBalance" | localize }}
@@ -295,18 +296,20 @@
                                     {{ "Beneficiary" | localize }}
                                 </label>
                                 <div  class="col-md-9">
-                                    <ejs-dropdownlist 
+                                    <ejs-autocomplete 
                                     id='beneficiary' 
                                     name='beneficiary' 
                                     cssClass="as-sy-input"
                                     [dataSource]='customers' 
+                                    [autofill]='true'
                                     [enableRtl]="true" 
-                                    [fields]='fields' 
+                                    [fields]='autoCompleteFields' 
+                                    [(ngModel)]="outgoingTransfer.beneficiary.name"
                                     required
-                                    [(ngModel)]="beneficiary.id"
+                                    (change)="onChangeBeneficiary($event)"
                                     #beneficiaryModel="ngModel" 
                                     #beneficiaryEl
-                                    ></ejs-dropdownlist>
+                                    ></ejs-autocomplete>
                                     <abp-validation-summary [control]="beneficiaryModel" [controlEl]="beneficiaryEl">
                                     </abp-validation-summary>
                                 </div>
@@ -324,7 +327,7 @@
                                     name='beneficiaryPhone' 
                                     class="e-input as-sy-input"
                                     autocomplete="off" 
-                                    [(ngModel)]="beneficiary.phoneNumber"
+                                    [(ngModel)]="outgoingTransfer.beneficiary.phoneNumber"
                                     #beneficiaryPhoneModel="ngModel" 
                                     #beneficiaryPhoneEl
                                     />
@@ -344,7 +347,7 @@
                                     name='beneficiaryAddress' 
                                     class="e-input as-sy-input"
                                     autocomplete="off"  
-                                    [(ngModel)]="beneficiary.address"
+                                    [(ngModel)]="outgoingTransfer.beneficiary.address"
                                     #beneficiaryAddressModel="ngModel" 
                                     #beneficiaryAddressEl
                                     ></textarea>
@@ -373,10 +376,11 @@
                                             <ejs-numerictextbox 
                                             id='amount' 
                                             name='amount' 
+                                            format='N'
                                             cssClass="as-sy-input"
                                             [enableRtl]="true" 
                                             required
-                                            [(ngModel)]="amount"
+                                            [(ngModel)]="outgoingTransfer.amount"
                                             #amountModel="ngModel" 
                                             #amountEl
                                             ></ejs-numerictextbox>
@@ -394,10 +398,11 @@
                                             <ejs-numerictextbox 
                                             id='commission' 
                                             name='commission' 
+                                            format='N'
                                             cssClass="as-sy-input"
                                             [enableRtl]="true" 
                                             required
-                                            [(ngModel)]="commission"
+                                            [(ngModel)]="outgoingTransfer.commission"
                                             #commissionModel="ngModel" 
                                             #commissionEl
                                             ></ejs-numerictextbox>
@@ -416,9 +421,10 @@
                                             id='companyCommission' 
                                             name='companyCommission' 
                                             cssClass="as-sy-input"
+                                            format='N'
                                             [enableRtl]="true" 
                                             required
-                                            [(ngModel)]="companyCommission"
+                                            [(ngModel)]="outgoingTransfer.companyCommission"
                                             #companyCommissionModel="ngModel" 
                                             #companyCommissionEl
                                             ></ejs-numerictextbox>
@@ -436,10 +442,11 @@
                                             <ejs-numerictextbox 
                                             id='receivedAmount' 
                                             name='receivedAmount' 
+                                            format='N'
                                             cssClass="as-sy-input"
                                             [enableRtl]="true" 
                                             required
-                                            [(ngModel)]="receivedAmount"
+                                            [(ngModel)]="outgoingTransfer.receivedAmount"
                                             #receivedAmountModel="ngModel" 
                                             #receivedAmountEl
                                             ></ejs-numerictextbox>
@@ -456,7 +463,7 @@
                                         {{ "RequiredAmount" | localize }}
                                     </label>
                                     <div  class="col-md-7">
-                                        <input class="e-input as-sy-input" type="text" tabindex="-1"  value="{{ getAmountWithCurrency(amount + commission) }}" readonly />
+                                        <input class="e-input as-sy-input" type="text" tabindex="-1"  value="{{ getAmountWithCurrency(outgoingTransfer.amount + outgoingTransfer.commission) }}" readonly />
                                     </div>
                             </div>
                         </div>
@@ -481,7 +488,7 @@
                                     name='reason' 
                                     class="e-input as-sy-input"
                                     autocomplete="off"  
-                                    [(ngModel)]="reason"
+                                    [(ngModel)]="outgoingTransfer.reason"
                                     #reasonModel="ngModel" 
                                     #reasonEl
                                     ></textarea>
@@ -501,7 +508,7 @@
                                     name='note' 
                                     class="e-input as-sy-input"
                                     autocomplete="off"  
-                                    [(ngModel)]="note"
+                                    [(ngModel)]="outgoingTransfer.note"
                                     #noteModel="ngModel" 
                                     #noteEl
                                     ></textarea>
