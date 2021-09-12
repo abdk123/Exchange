@@ -33,7 +33,7 @@ import { AutoCompleteModule, DropDownListModule } from '@syncfusion/ej2-angular-
 import { SwitchModule } from '@syncfusion/ej2-angular-buttons';
 import { OutgoingTransferComponent } from './outgoing-transfer/outgoing-transfer.component';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { CompanyServiceProxy, CountryServiceProxy, CurrencyServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CompanyServiceProxy, CountryServiceProxy, CurrencyServiceProxy, OutgoingTransferServiceProxy } from '@shared/service-proxies/service-proxies';
 
 const SYNCFUSION_MODULES = [
   //GridModule,
@@ -90,7 +90,8 @@ const NB_MODULES = [
     ...SYNCFUSION_SERVICES,
     CurrencyServiceProxy,
     CompanyServiceProxy,
-    CountryServiceProxy
+    CountryServiceProxy,
+    OutgoingTransferServiceProxy
   ],
   entryComponents: [
 
