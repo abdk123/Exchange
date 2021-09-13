@@ -6725,7 +6725,7 @@ export class ClientCashFlowDto implements IClientCashFlowDto {
     client: ClientDto;
     commission: number;
     clientCommission: number;
-    date: moment.Moment;
+    date: moment.Moment | undefined;
     amount: number;
     currentBalance: number;
     transactionId: number;
@@ -6812,7 +6812,7 @@ export interface IClientCashFlowDto {
     client: ClientDto;
     commission: number;
     clientCommission: number;
-    date: moment.Moment;
+    date: moment.Moment | undefined;
     amount: number;
     currentBalance: number;
     transactionId: number;
@@ -7249,7 +7249,7 @@ export class CompanyCashFlowDto implements ICompanyCashFlowDto {
     company: CompanyDto;
     commission: number;
     companyCommission: number;
-    date: moment.Moment;
+    date: moment.Moment | undefined;
     amount: number;
     currentBalance: number;
     transactionId: number;
@@ -7336,7 +7336,7 @@ export interface ICompanyCashFlowDto {
     company: CompanyDto;
     commission: number;
     companyCommission: number;
-    date: moment.Moment;
+    date: moment.Moment | undefined;
     amount: number;
     currentBalance: number;
     transactionId: number;
@@ -9740,7 +9740,7 @@ export interface ITreasuryBalanceDto {
 export class TreasuryCashFlowDto implements ITreasuryCashFlowDto {
     name: string | undefined;
     treasuryId: number;
-    date: moment.Moment;
+    date: moment.Moment | undefined;
     amount: number;
     currentBalance: number;
     transactionId: number;
@@ -9821,7 +9821,7 @@ export class TreasuryCashFlowDto implements ITreasuryCashFlowDto {
 export interface ITreasuryCashFlowDto {
     name: string | undefined;
     treasuryId: number;
-    date: moment.Moment;
+    date: moment.Moment | undefined;
     amount: number;
     currentBalance: number;
     transactionId: number;

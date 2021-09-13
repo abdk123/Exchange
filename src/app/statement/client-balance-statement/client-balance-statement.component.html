@@ -70,7 +70,9 @@
                                     <e-column headerText="{{l('Amount')}}" textAlign="center">
                                         <ng-template #template let-data>{{ getBalance(data.amount) }}</ng-template>
                                     </e-column>
-                                    <e-column field="commission" format='N' type='number' headerText="{{l('Commission')}}" textAlign="center"></e-column>
+                                    <e-column headerText="{{l('Commission')}}" textAlign="center">
+                                        <ng-template #template let-data>{{ getCommission(data.commission) }}</ng-template>
+                                    </e-column>
                                     <e-column field="type" headerText="{{l('Type')}}" textAlign="center"></e-column>
                                     <e-column field="date" format='dd/MM/yyyy hh:mm' type='date' headerText="{{l('Date')}}" width="200" textAlign="center">
                                         

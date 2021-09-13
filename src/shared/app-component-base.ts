@@ -61,9 +61,17 @@ export abstract class AppComponentBase {
         if(value != undefined)
         {
             var realNumber = Math.abs(value);
-            return this.numberWithCommas(realNumber) + '/' + (value <= 0 ? this.l('ForHim') : this.l('OnHim'));
+            if(value < 0){
+                return this.numberWithCommas(realNumber) + '/' + this.l('ForHim');
+            }else if(value > 0){
+                return this.numberWithCommas(realNumber) + '/' + this.l('OnHim');
+            }
         }
-        return 0;
+        return '';
+    }
+
+    getCommission(value){
+        return (value != undefined && value > 0) ? this.numberWithCommas(value) : '';
     }
 
     numberWithCommas(number){
