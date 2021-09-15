@@ -34,6 +34,7 @@ import { SwitchModule } from '@syncfusion/ej2-angular-buttons';
 import { OutgoingTransferComponent } from './outgoing-transfer/outgoing-transfer.component';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { CompanyServiceProxy, CountryServiceProxy, CurrencyServiceProxy, OutgoingTransferServiceProxy } from '@shared/service-proxies/service-proxies';
+import { IncomeTransferComponent } from './income-transfer/income-transfer.component';
 
 const SYNCFUSION_MODULES = [
   //GridModule,
@@ -73,7 +74,7 @@ const NB_MODULES = [
 ];
 
 @NgModule({
-  declarations: [TransferComponent, OutgoingTransferComponent],
+  declarations: [TransferComponent, OutgoingTransferComponent, IncomeTransferComponent],
   imports: [
     CommonModule,
     FormsModule,

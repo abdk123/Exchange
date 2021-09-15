@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
 import { LocalizationHelper } from '@shared/localization/localization-helper';
 import { ClientDto, ClientServiceProxy, CompanyDto, CompanyServiceProxy, CountryDto, CountryServiceProxy, CurrencyDto, CurrencyServiceProxy, CustomerDto, CustomerServiceProxy, OutgoingTransferDto, OutgoingTransferServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -23,6 +24,7 @@ export class OutgoingTransferComponent  extends AppComponentBase implements OnIn
   previousBalanceForToCompany: number = 0.0;
   currentBalanceForToCompany: number = 0.0;
   saving = false;
+  transferId: number;
   currencies: CurrencyDto[] = [];
   companies: CompanyDto[] = [];
   countries: CountryDto[] = [];
@@ -36,6 +38,8 @@ export class OutgoingTransferComponent  extends AppComponentBase implements OnIn
 
   constructor(
     injector: Injector,
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
     private _currencyAppService: CurrencyServiceProxy,
     private _companyAppService: CompanyServiceProxy,
     private _countryAppService: CountryServiceProxy,
@@ -75,6 +79,17 @@ export class OutgoingTransferComponent  extends AppComponentBase implements OnIn
     ];
 
     this.outgoingTransfer.paymentType = 0;
+
+    // console.log(this._activatedRoute.snapshot.params);
+    // if(this._activatedRoute.snapshot.params != undefined){
+    //   this.transferId = +this._activatedRoute.snapshot.params['id'];
+    //   if(this.transferId != undefined){
+        
+    //     this._outgoingTransferAppService.getById(this.transferId)
+    //     .subscribe(result => this.outgoingTransfer = result);
+    //   }
+    // }
+    
   }
 
   initialCurrencies(){

@@ -20,27 +20,27 @@
                                     <div class="col-md-3">
                                         <ejs-dropdownlist id='clientId' name='clientId' cssClass="as-sy-input" [dataSource]='clients'
                                             [enableRtl]="true" [fields]='fields' required [(ngModel)]="input.clientId" placeholder="{{'Client' | localize}}"
-                                            #clientIdModel="ngModel" #clientIdEl></ejs-dropdownlist>
+                                            floatLabelType="Auto" #clientIdModel="ngModel" #clientIdEl></ejs-dropdownlist>
                                         <abp-validation-summary [control]="clientIdModel" [controlEl]="clientIdEl">
                                         </abp-validation-summary>
                                     </div>
                                     <div class="col-md-3">
                                         <ejs-dropdownlist id='currencyId' name='currencyId' cssClass="as-sy-input" [dataSource]='currencies'
                                             [enableRtl]="true" [fields]='fields' required [(ngModel)]="input.currencyId"  placeholder="{{'Currency' | localize}}"
-                                            #currencyIdModel="ngModel" #currencyIdEl></ejs-dropdownlist>
+                                            floatLabelType="Auto" #currencyIdModel="ngModel" #currencyIdEl></ejs-dropdownlist>
                                         <abp-validation-summary [control]="currencyIdModel" [controlEl]="currencyIdEl">
                                         </abp-validation-summary>
                                     </div>
                                     <div class="col-md-3">
                                         <ejs-datepicker id='fromDate' name='fromDate' cssClass="as-sy-input" locale='ar-SY' required
-                                            placeholder="{{ 'FromDate' | localize }}" [(ngModel)]="input.fromDate" #fromDateModel="ngModel"
+                                        floatLabelType="Auto" placeholder="{{ 'FromDate' | localize }}" [(ngModel)]="input.fromDate" #fromDateModel="ngModel"
                                             #fromDateEl ></ejs-datepicker>
                                         <abp-validation-summary [control]="fromDateModel" [controlEl]="fromDateEl">
                                         </abp-validation-summary>
                                     </div>
                                     <div class="col-md-3">
                                         <ejs-datepicker id='toDate' name='toDate' cssClass="as-sy-input" locale='ar-SY' required
-                                            placeholder="{{ 'ToDate' | localize }}" [(ngModel)]="input.toDate" #toDateModel="ngModel"
+                                        floatLabelType="Auto" placeholder="{{ 'ToDate' | localize }}" [(ngModel)]="input.toDate" #toDateModel="ngModel"
                                             #toDateEl></ejs-datepicker>
                                         <abp-validation-summary [control]="toDateModel" [controlEl]="toDateEl">
                                         </abp-validation-summary>
@@ -59,29 +59,27 @@
                     <div class="row">
                         <div class="col-md-12">
                             <ejs-grid id="CashFlowGrid" #cashFlowGrid [dataSource]="dataSource" [allowPaging]="true"
-                            [enableRtl]='true' 
+                            [enableRtl]='true' height='31vh' width='100%'
                             [pageSettings]="pageSettings">
                                 
                                 <e-columns>
                                     <e-column field="id" headerText="Id" isPrimaryKey="true" [visible]="false"></e-column>
-                                    <e-column field="currentBalance" headerText="{{l('Balance')}}" textAlign="center">
+                                    <e-column field="currentBalance" headerText="{{l('Balance')}}" textAlign="center" width=150>
                                         <ng-template #template let-data>{{ getBalance(data.currentBalance) }}</ng-template>
                                     </e-column>
-                                    <e-column headerText="{{l('Amount')}}" textAlign="center">
+                                    <e-column headerText="{{l('Amount')}}" textAlign="center" width=150>
                                         <ng-template #template let-data>{{ getBalance(data.amount) }}</ng-template>
                                     </e-column>
-                                    <e-column headerText="{{l('Commission')}}" textAlign="center">
+                                    <e-column headerText="{{l('Commission')}}" textAlign="center" width=120>
                                         <ng-template #template let-data>{{ getCommission(data.commission) }}</ng-template>
                                     </e-column>
-                                    <e-column field="type" headerText="{{l('Type')}}" textAlign="center"></e-column>
+                                    <e-column field="type" headerText="{{l('Type')}}" textAlign="center" width=120></e-column>
                                     <e-column field="date" format='dd/MM/yyyy hh:mm' type='date' headerText="{{l('Date')}}" width="200" textAlign="center">
                                         
                                     </e-column>
-                                    <e-column field="note" headerText="{{l('Note')}}" textAlign="center"></e-column>
-                                    <e-column field="instrumentNo" headerText="{{l('InstrumentNo')}}" textAlign="center"></e-column>
-                                    <e-column   headerText="{{l('Matcher')}}" textAlign="center"></e-column>
-                                    
-                                    
+                                    <e-column field="note" headerText="{{l('Note')}}" textAlign="center" width=150></e-column>
+                                    <e-column field="instrumentNo" headerText="{{l('InstrumentNo')}}" textAlign="center" width=120></e-column>
+                                    <e-column   headerText="{{l('Matcher')}}" textAlign="center" width=150></e-column>
                                 </e-columns>
                             </ejs-grid>
                         </div>
