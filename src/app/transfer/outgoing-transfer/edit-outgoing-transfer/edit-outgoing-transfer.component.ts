@@ -4,18 +4,17 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { LocalizationHelper } from '@shared/localization/localization-helper';
 import { ClientDto, ClientServiceProxy, CompanyDto, CompanyServiceProxy, CountryDto, CountryServiceProxy, CurrencyDto, CurrencyServiceProxy, CustomerDto, CustomerServiceProxy, OutgoingTransferDto, OutgoingTransferServiceProxy } from '@shared/service-proxies/service-proxies';
 import { L10n, setCulture, loadCldr } from '@syncfusion/ej2-base';
-import { result } from 'lodash-es';
 import { finalize } from 'rxjs/operators';
 
 setCulture('ar-SY');
 L10n.load(LocalizationHelper.getArabicResources());
 
 @Component({
-  selector: 'app-outgoing-transfer',
-  templateUrl: './outgoing-transfer.component.html',
-  styleUrls: ['./outgoing-transfer.component.scss']
+  selector: 'app-edit-outgoing-transfer',
+  templateUrl: './edit-outgoing-transfer.component.html',
+  styleUrls: ['./edit-outgoing-transfer.component.scss']
 })
-export class OutgoingTransferComponent  extends AppComponentBase implements OnInit {
+export class EditOutgoingTransferComponent extends AppComponentBase implements OnInit {
 
   outgoingTransfer: OutgoingTransferDto = new OutgoingTransferDto();
   previousBalance: number = 0.0;
@@ -59,7 +58,7 @@ export class OutgoingTransferComponent  extends AppComponentBase implements OnIn
   }
 
   ngOnInit(): void {
-    this.outgoingTransfer.date = new Date().toISOString();
+    // this.outgoingTransfer.date = new Date().toISOString();
     if(this.outgoingTransfer.beneficiary == undefined)
       this.outgoingTransfer.beneficiary=new CustomerDto();
 
@@ -79,16 +78,16 @@ export class OutgoingTransferComponent  extends AppComponentBase implements OnIn
     ];
 
     this.outgoingTransfer.paymentType = 0;
-
-    // console.log(this._activatedRoute.snapshot.params);
-    // if(this._activatedRoute.snapshot.params != undefined){
-    //   this.transferId = +this._activatedRoute.snapshot.params['id'];
-    //   if(this.transferId != undefined){
-        
-    //     this._outgoingTransferAppService.getById(this.transferId)
-    //     .subscribe(result => this.outgoingTransfer = result);
-    //   }
-    // }
+    
+    if(history.state != undefined && history.state.name != undefined && history.state.name == 'edit-outgoing-transfer'){
+      this.transferId = +history.state.id;
+      if(this.transferId != undefined){
+        this._outgoingTransferAppService.getById(this.transferId)
+        .subscribe(result => {
+          this.outgoingTransfer = result
+        });
+      }
+    }
     
   }
 

@@ -5,6 +5,7 @@ import { inputs } from '@syncfusion/ej2-angular-grids/src/grid/grid.component';
 import { NbComponentShape, NbComponentSize, NbComponentStatus, NbThemeService } from '@nebular/theme';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Route, Router } from '@angular/router';
 
 @Component({
   templateUrl: './home.component.html',
@@ -20,6 +21,7 @@ export class HomeComponent extends AppComponentBase {
   date = new Date();
 
   constructor(injector: Injector,
+    private router: Router,
     private readonly themeService: NbThemeService) {
     super(injector);
     this.materialTheme$ = this.themeService.onThemeChange()
@@ -29,6 +31,10 @@ export class HomeComponent extends AppComponentBase {
       }));
 
       
+  }
+
+  GoTo(){
+    this.router.navigateByUrl('/app/transfer/edit-outgoing-transfer', { state: { id:4 , name:'edit-outgoing-transfer' } });
   }
 }
 

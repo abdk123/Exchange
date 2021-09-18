@@ -50,7 +50,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'OutgoingTransfers',
-        link: '/app/transfer/outgoing-transfer',
+        link: '/app/transfer/create-outgoing-transfer',
       },
     
     ],

@@ -26,15 +26,17 @@ import {
   PageService, 
   SortService, 
   ToolbarService } from '@syncfusion/ej2-angular-grids';
-import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
+import { AccordionModule, ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { MaskedTextBoxModule, NumericTextBoxModule, TextBoxModule, UploaderModule } from '@syncfusion/ej2-angular-inputs';
 import { CalendarModule, DatePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { AutoCompleteModule, DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SwitchModule } from '@syncfusion/ej2-angular-buttons';
-import { OutgoingTransferComponent } from './outgoing-transfer/outgoing-transfer.component';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { CompanyServiceProxy, CountryServiceProxy, CurrencyServiceProxy, OutgoingTransferServiceProxy } from '@shared/service-proxies/service-proxies';
 import { IncomeTransferComponent } from './income-transfer/income-transfer.component';
+import { CreateOutgoingTransferComponent } from './outgoing-transfer/create-outgoing-transfer/create-outgoing-transfer.component';
+import { EditOutgoingTransferComponent } from './outgoing-transfer/edit-outgoing-transfer/edit-outgoing-transfer.component';
+import { SearchOutgoingTransferComponent } from './outgoing-transfer/search-outgoin-transfer/search-outgoing-transfer.component';
 
 const SYNCFUSION_MODULES = [
   //GridModule,
@@ -47,7 +49,8 @@ const SYNCFUSION_MODULES = [
   MaskedTextBoxModule,
   DropDownListModule,
   SwitchModule,
-  AutoCompleteModule 
+  AutoCompleteModule,
+  AccordionModule 
 ];
 
 const SYNCFUSION_SERVICES = [
@@ -74,7 +77,13 @@ const NB_MODULES = [
 ];
 
 @NgModule({
-  declarations: [TransferComponent, OutgoingTransferComponent, IncomeTransferComponent],
+  declarations: [
+    TransferComponent, 
+    IncomeTransferComponent, 
+    CreateOutgoingTransferComponent, 
+    EditOutgoingTransferComponent, 
+    SearchOutgoingTransferComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
